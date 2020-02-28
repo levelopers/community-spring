@@ -1,5 +1,6 @@
 package com.forum.forum.service;
 
+import com.forum.forum.dto.PaginationDTO;
 import com.forum.forum.dto.QuestionDTO;
 import com.forum.forum.mapper.QuestionMapper;
 import com.forum.forum.mapper.UserMapper;
@@ -25,16 +26,41 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question> questionList = questionMapper.list();
+    public PaginationDTO list(Integer page, Integer size) {
+        Integer offset = size * (page - 1);
+        List<Question> questionList = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
+
+        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             User user = userMapper.findById(question.getCreator());
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        return questionDTOList;
+        paginationDTO.setQuestionDTOList(questionDTOList);
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount, page);
+        return paginationDTO;
+    }
+
+    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+        Integer offset = size * (page - 1);
+        List<Question> questionList = questionMapper.listByUserId(userId,offset, size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+
+        PaginationDTO paginationDTO = new PaginationDTO();
+        for (Question question : questionList) {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            User user = userMapper.findById(question.getCreator());
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        paginationDTO.setQuestionDTOList(questionDTOList);
+        Integer totalCount = questionMapper.countByUserID(userId);
+        paginationDTO.setPagination(totalCount, page);
+        return paginationDTO;
     }
 }
