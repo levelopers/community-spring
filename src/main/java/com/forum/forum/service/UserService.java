@@ -2,8 +2,11 @@ package com.forum.forum.service;
 
 import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.User;
+import com.forum.forum.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author ：Zack
@@ -16,13 +19,18 @@ public class UserService {
     UserMapper userMapper;
 
     public void createOrUpdate(User user) {
-        User dbuser = userMapper.findByAccountId(user.getAccountId());
-        if (dbuser != null) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccountIdEqualTo(user.getAccountId());
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.size()!=0) {
+            User dbuser = users.get(0);
             dbuser.setName(user.getName());
             dbuser.setToken(user.getToken());
             dbuser.setAvatarUrl(user.getAvatarUrl());
             dbuser.setGmtModified(System.currentTimeMillis());
-            userMapper.update(dbuser);
+            UserExample example = new UserExample();
+            example.createCriteria().andIdEqualTo(dbuser.getId());
+            userMapper.updateByExampleSelective(dbuser, example);
         } else {
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());

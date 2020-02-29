@@ -1,7 +1,6 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.QuestionDTO;
-import com.forum.forum.mapper.QuestionMapper;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.User;
 import com.forum.forum.service.QuestionService;

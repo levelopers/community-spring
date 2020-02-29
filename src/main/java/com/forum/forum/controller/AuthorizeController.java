@@ -2,7 +2,6 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dto.AccessTokenDTO;
 import com.forum.forum.dto.GithubUser;
-import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.User;
 import com.forum.forum.provider.GithubProvider;
 import com.forum.forum.service.UserService;
