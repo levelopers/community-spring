@@ -2,6 +2,8 @@ package com.forum.forum.service;
 
 import com.forum.forum.dto.PaginationDTO;
 import com.forum.forum.dto.QuestionDTO;
+import com.forum.forum.exception.CustomizeErrorCode;
+import com.forum.forum.exception.CustomizeException;
 import com.forum.forum.mapper.QuestionMapper;
 import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.Question;
@@ -72,6 +74,9 @@ public class QuestionService {
 
     public QuestionDTO findById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
 
