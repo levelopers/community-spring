@@ -4,6 +4,7 @@ import com.forum.forum.dto.PaginationDTO;
 import com.forum.forum.dto.QuestionDTO;
 import com.forum.forum.exception.CustomizeErrorCode;
 import com.forum.forum.exception.CustomizeException;
+import com.forum.forum.mapper.QuestionExtMapper;
 import com.forum.forum.mapper.QuestionMapper;
 import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.Question;
@@ -29,6 +30,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         Integer offset = size * (page - 1);
@@ -96,5 +100,12 @@ public class QuestionService {
             example.createCriteria().andIdEqualTo(question.getId());
             questionMapper.updateByExampleSelective(question, example);
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
