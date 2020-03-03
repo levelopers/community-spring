@@ -1,6 +1,7 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.model.Question;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * @author ：Zack
  * @date ：Created in 2020/2/28 10:38
  */
+@Data
 public class PaginationDTO {
     private List<QuestionDTO> questionDTOList;
     private boolean showPrevious;
@@ -61,69 +63,5 @@ public class PaginationDTO {
         } else {
             showEndPage = true;
         }
-    }
-
-    public List<QuestionDTO> getQuestionDTOList() {
-        return questionDTOList;
-    }
-
-    public void setQuestionDTOList(List<QuestionDTO> questionDTOList) {
-        this.questionDTOList = questionDTOList;
-    }
-
-    public boolean isShowPrevious() {
-        return showPrevious;
-    }
-
-    public void setShowPrevious(boolean showPrevious) {
-        this.showPrevious = showPrevious;
-    }
-
-    public boolean isShowFirstPage() {
-        return showFirstPage;
-    }
-
-    public void setShowFirstPage(boolean showFirstPage) {
-        this.showFirstPage = showFirstPage;
-    }
-
-    public boolean isShowNext() {
-        return showNext;
-    }
-
-    public void setShowNext(boolean showNext) {
-        this.showNext = showNext;
-    }
-
-    public boolean isShowEndPage() {
-        return showEndPage;
-    }
-
-    public void setShowEndPage(boolean showEndPage) {
-        this.showEndPage = showEndPage;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public List<Integer> getPages() {
-        return pages;
-    }
-
-    public void setPages(List<Integer> pages) {
-        this.pages = pages;
-    }
-
-    public Integer getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(Integer totalPage) {
-        this.totalPage = totalPage;
     }
 }
