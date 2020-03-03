@@ -4,10 +4,7 @@ import com.forum.forum.dto.CommentDTO;
 import com.forum.forum.enums.CommentTypeEnum;
 import com.forum.forum.exception.CustomizeErrorCode;
 import com.forum.forum.exception.CustomizeException;
-import com.forum.forum.mapper.CommentMapper;
-import com.forum.forum.mapper.QuestionExtMapper;
-import com.forum.forum.mapper.QuestionMapper;
-import com.forum.forum.mapper.UserMapper;
+import com.forum.forum.mapper.*;
 import com.forum.forum.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class CommentService {
 
     @Autowired
     CommentMapper commentMapper;
+
+    @Autowired
+    CommentExtMapper commentExtMapper;
 
     @Autowired
     QuestionMapper questionMapper;
@@ -54,6 +54,11 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
 
         } else {
             // reply question
