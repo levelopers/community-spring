@@ -31,10 +31,10 @@ public class CustomizeErrorController implements ErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, Model model) {
         HttpStatus status = getStatus(request);
 
-        if(status.is4xxClientError()) {
+        if (status.is4xxClientError()) {
             model.addAttribute("message", "client error");
         }
-        if(status.is5xxServerError()) {
+        if (status.is5xxServerError()) {
             model.addAttribute("message", "server error");
         }
 
@@ -48,8 +48,7 @@ public class CustomizeErrorController implements ErrorController {
         }
         try {
             return HttpStatus.valueOf(statusCode);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }

@@ -4,13 +4,13 @@ package com.forum.forum.exception;
  * @author ：Zack
  * @date ：Created in 2020/2/29 11:45
  */
-public enum CustomizeErrorCode implements ICustomizeErrorCode{
-    QUESTION_NOT_FOUND(2001,"question not found"),
+public enum CustomizeErrorCode implements ICustomizeErrorCode {
+    QUESTION_NOT_FOUND(2001, "question not found"),
     TAGET_PARENT_NOT_FOUNT(2002, "no question or comment selected"),
-    NO_LOGIN(2003,"you need to login"),
+    NO_LOGIN(2003, "you need to login"),
     SYS_ERROR(2004, "system error"),
-    TYPE_PARAM_WRONG(2005,"no type parameter in comment"),
-    COMMENT_NOT_FOUND(2006,"comment not found"),
+    TYPE_PARAM_WRONG(2005, "no type parameter in comment"),
+    COMMENT_NOT_FOUND(2006, "comment not found"),
     CONTENT_IS_EMPTY(2007, "content is empty"),
     READ_NOTIFICATION_FAIL(2008, "兄弟你这是读别人的信息呢？"),
     NOTIFICATION_NOT_FOUND(2009, "消息莫非是不翼而飞了？"),

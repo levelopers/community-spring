@@ -48,7 +48,7 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestionDTOList(questionDTOList);
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         paginationDTO.setPagination(totalCount, page);
         return paginationDTO;
     }
@@ -71,7 +71,7 @@ public class QuestionService {
         paginationDTO.setQuestionDTOList(questionDTOList);
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int)questionMapper.countByExample(example1);
+        Integer totalCount = (int) questionMapper.countByExample(example1);
         paginationDTO.setPagination(totalCount, page);
         return paginationDTO;
     }

@@ -31,9 +31,9 @@ public class CustomizeExceptionHandler {
         if ("application/json".equals(contentType)) {
             ResultDTO resultDTO;
             if (ex instanceof CustomizeException) {
-                resultDTO= ResultDTO.errorOf((CustomizeException)ex);
+                resultDTO = ResultDTO.errorOf((CustomizeException) ex);
             } else {
-                resultDTO= ResultDTO.errorOf(CustomizeErrorCode.SYS_ERROR);
+                resultDTO = ResultDTO.errorOf(CustomizeErrorCode.SYS_ERROR);
             }
             try {
                 response.setContentType("application/json");
@@ -42,7 +42,7 @@ public class CustomizeExceptionHandler {
                 PrintWriter writer = response.getWriter();
                 writer.write(JSON.toJSONString(resultDTO));
                 writer.close();
-            } catch (IOException e){
+            } catch (IOException e) {
             }
             return null;
         } else {
