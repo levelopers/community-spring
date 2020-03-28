@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forum Community</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    };
+
+
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        $.ajax({
+            type: "POST",
+            url: "/users/login",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "username": username,
+                "password": password
+            }),
+            success: function (response) {
+                if (response.code == 200) {
+                    window.location.reload();
+                } else {
+                    if (response.code == 0) {
+                        window.localStorage.setItem("closable", true);
+                        window.localStorage.setItem("jsonwebtoken", response.data.token);
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            },
+            dataType: "json"
+        });
+    }
+</script>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main">
+    <div class="d-flex flex-column m-2">
+        <input type="text" id="username" name="username" placeholder="username">
+        <input type="text" id="password" name="password" placeholder="password">
+
+        <button type="button" onclick="login()" class="btn btn-success btn-publish ">
+            login
+        </button>
+    </div>
+
+</div>
+<!--<div th:insert="~{footer :: foot}"></div>-->
+</body>
+</html>

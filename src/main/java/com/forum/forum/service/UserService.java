@@ -24,7 +24,7 @@ public class UserService {
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size() != 0) {
             User dbuser = users.get(0);
-            dbuser.setName(user.getName());
+            dbuser.setUsername(user.getUsername());
             dbuser.setToken(user.getToken());
             dbuser.setAvatarUrl(user.getAvatarUrl());
             dbuser.setGmtModified(System.currentTimeMillis());
