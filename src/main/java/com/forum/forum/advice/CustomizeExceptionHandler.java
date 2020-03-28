@@ -26,11 +26,11 @@ public class CustomizeExceptionHandler {
                                            Throwable ex,
                                            Model model) {
         String contentType = request.getContentType();
+        ex.printStackTrace();
 
         //switch response by request content type
         if ("application/json".equals(contentType)) {
             ResultDTO resultDTO;
-            ex.printStackTrace();
             if (ex instanceof CustomizeException) {
                 resultDTO = ResultDTO.errorOf((CustomizeException) ex);
             } else {

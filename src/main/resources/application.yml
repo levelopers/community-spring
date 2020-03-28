@@ -11,6 +11,10 @@
 #    mybatis.configuration.map-underscore-to-camel-case=true
 #    mybatis.type-aliases-package=com.forum.forum.mapper
 #    mybatis.mapper-locations=classpath:mapper/*.xml
+#logging.file.path=logs/community.log
+#logging.level.com.forum.forum.mapper=debug
+#logging.file.max-size=10MB
+#logging.file.max-history=100
 
 spring:
   datasource:
