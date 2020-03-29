@@ -7,6 +7,7 @@ import com.forum.forum.model.UserExample;
 import com.forum.forum.response.Result;
 import com.forum.forum.response.ResultCode;
 import com.forum.forum.security.jwt.JwtProvider;
+import com.forum.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,32 +25,28 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Autowired
     private JwtProvider jwtProvider;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-//
-//    @PostMapping("/users/signup")
-//    @ResponseBody
-//    public void signUp(@RequestBody UserEntity userEntity) {
-//        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-//        userEntity.setUserId(UUID.randomUUID().toString());
-//        userJPA.save(userEntity);
-//    }
-//
+
+    @PostMapping("/users/signup")
+    @ResponseBody
+    public User signUp(@RequestBody User userBody) {
+        User userResult = userService.createOrUpdate(userBody);
+        return  userResult;
+    }
+
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
     @ResponseBody
-    public Result login(@RequestBody User user, HttpServletResponse response) {
-//        User user = userJPA.findByUsername(userEntity.getUsername());
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andUsernameEqualTo(user.getUsername());
-        List<User> users = userMapper.selectByExample(userExample);
-        boolean isPasswordMatched = passwordEncoder.matches(user.getPassword(), users.get(0).getPassword());
+    public Result login(@RequestBody User userBody, HttpServletResponse response) {
+        User dbUser = userService.findByUsername(userBody.getUsername());
+        boolean isPasswordMatched = passwordEncoder.matches(userBody.getPassword(),dbUser.getPassword());
         if (isPasswordMatched) {
-            String token= jwtProvider.generate(user.getUsername());
+            String token= jwtProvider.generate(dbUser.getUsername());
             response.addHeader("Authorization", "Bearer " + token);
             JSONObject result = new JSONObject();
             result.put("token", token);
@@ -59,9 +56,4 @@ public class UserController {
         }
     }
 
-
-    @GetMapping("/users/login")
-    public String loginPage() {
-        return "login";
-    }
 }

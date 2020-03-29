@@ -1,0 +1,112 @@
+
+INSERT INTO question (
+TITLE,
+DESCRIPTION,
+GMT_CREATE,
+GMT_MODIFIED,
+CREATOR,
+COMMENT_COUNT,
+VIEW_COUNT,
+LIKE_COUNT,
+TAG) VALUES (
+'question1',
+'this is a description',
+1585385895854,
+1585385895854,
+1,
+1,
+1,
+1,
+'tag1'
+);
+
+
+INSERT INTO question (
+TITLE,
+DESCRIPTION,
+GMT_CREATE,
+GMT_MODIFIED,
+CREATOR,
+COMMENT_COUNT,
+VIEW_COUNT,
+LIKE_COUNT,
+TAG) VALUES (
+'question2',
+'this is a description',
+1585385895854,
+1585385895854,
+2,
+2,
+2,
+2,
+'tag1,tag2'
+);
+
+--     ID            BIGINT auto_increment
+--         primary key,
+--     PARENT_ID     BIGINT not null,
+--     TYPE          INT    not null,
+--     COMMENTATOR   BIGINT not null,
+--     GMT_CREATE    BIGINT not null,
+--     GMT_MODIFIED  BIGINT not null,
+--     LIKE_COUNT    BIGINT default 0,
+--     CONTENT       VARCHAR(1024),
+--     COMMENT_COUNT INT    default 0
+
+INSERT INTO comment (
+PARENT_ID,
+TYPE,
+COMMENTATOR,
+GMT_CREATE,
+GMT_MODIFIED,
+LIKE_COUNT,
+CONTENT,
+COMMENT_COUNT) VALUES (
+1,
+1,
+1,
+1585385895854,
+1585385895854,
+12,
+'1st comment to question 1',
+0
+);
+
+
+INSERT INTO comment (
+PARENT_ID,
+TYPE,
+COMMENTATOR,
+GMT_CREATE,
+GMT_MODIFIED,
+LIKE_COUNT,
+CONTENT,
+COMMENT_COUNT) VALUES (
+1,
+1,
+2,
+1585385895854,
+1585385895854,
+13,
+'2nd comment to question 1',
+1
+);
+
+INSERT INTO comment (
+PARENT_ID,
+TYPE,
+COMMENTATOR,
+GMT_CREATE,
+GMT_MODIFIED,
+LIKE_COUNT,
+CONTENT,
+COMMENT_COUNT) VALUES (
+2,
+2,
+1,
+1585385895854,
+1585385895854,
+13,
+'1st comment to comment 2',
+0
+);

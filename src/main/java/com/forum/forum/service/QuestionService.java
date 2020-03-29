@@ -1,6 +1,5 @@
 package com.forum.forum.service;
 
-import com.forum.forum.dto.PaginationDTO;
 import com.forum.forum.dto.QuestionDTO;
 import com.forum.forum.exception.CustomizeErrorCode;
 import com.forum.forum.exception.CustomizeException;
@@ -34,12 +33,9 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
-        Integer offset = size * (page - 1);
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+    public List<QuestionDTO> list(Integer limit, Integer offset) {
+        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
-
-        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
@@ -47,20 +43,14 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestionDTOList(questionDTOList);
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
-        paginationDTO.setPagination(totalCount, page);
-        return paginationDTO;
+        return questionDTOList;
     }
 
-    public PaginationDTO list(Long userId, Integer page, Integer size) {
-        Integer offset = size * (page - 1);
+    public List<QuestionDTO> list(Long userId, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
-
-        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
@@ -68,12 +58,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestionDTOList(questionDTOList);
-        QuestionExample example1 = new QuestionExample();
-        example1.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int) questionMapper.countByExample(example1);
-        paginationDTO.setPagination(totalCount, page);
-        return paginationDTO;
+        return questionDTOList;
     }
 
     public QuestionDTO findById(Long id) {
@@ -89,7 +74,7 @@ public class QuestionService {
         return questionDTO;
     }
 
-    public void createOrUpdate(Question question) {
+    public Question createOrUpdate(Question question) {
         if (question.getId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
@@ -97,6 +82,7 @@ public class QuestionService {
             question.setCommentCount(0);
             question.setLikeCount(0);
             questionMapper.insert(question);
+            return question;
         } else {
             Question dbQuestion = questionMapper.selectByPrimaryKey(question.getId());
             if (dbQuestion == null) {
@@ -110,6 +96,7 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
             questionMapper.updateByExampleSelective(updateQuestion, example);
+            return updateQuestion;
         }
     }
 

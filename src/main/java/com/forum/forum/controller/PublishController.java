@@ -1,18 +1,22 @@
 package com.forum.forum.controller;
 
-import com.forum.forum.dto.QuestionDTO;
+import com.forum.forum.dto.ResultDTO;
+import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.User;
+import com.forum.forum.model.UserExample;
+import com.forum.forum.security.jwt.JwtProvider;
 import com.forum.forum.service.QuestionService;
+import com.forum.forum.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author ：Zack
@@ -24,64 +28,25 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/publish")
-    public String publish() {
-        return "publish";
-    }
+    @Autowired
+    private JwtProvider jwtProvider;
 
-    @GetMapping("/publish/{id}")
-    public String editPublish(@PathVariable(name = "id") Long id,
-                              Model model) {
-        QuestionDTO questionDTO = questionService.findById(id);
-        model.addAttribute("title", questionDTO.getTitle());
-        model.addAttribute("description", questionDTO.getDescription());
-        model.addAttribute("tag", questionDTO.getTag());
-        model.addAttribute("id", questionDTO.getId());
-        return "publish";
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/publish")
-    public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
-            @RequestParam("id") Long id,
-            HttpServletRequest request,
-            Model model) {
-        model.addAttribute("title", title);
-        model.addAttribute("description", description);
-        model.addAttribute("tag", tag);
+    @ResponseBody
+    public ResultDTO<Question> doPublish(@RequestBody Question questionBody,
+                                         HttpServletRequest request) {
 
-        if (title == null || title == "") {
-            model.addAttribute("error", "title required");
-            return "publish";
-        }
-
-        if (description == null || description == "") {
-            model.addAttribute("error", "description required");
-            return "publish";
-        }
-
-        if (tag == null || tag == "") {
-            model.addAttribute("error", "tag required");
-            return "publish";
-        }
-
-        User user = (User) request.getSession().getAttribute("user");
-
-        if (user == null) {
-            model.addAttribute("error", "you need to login first");
-            return "publish";
-        }
+        String username = jwtProvider.getUserAccount(request);
+        User user = userService.findByUsername(username);
 
         Question question = new Question();
-        question.setTitle(title);
-        question.setDescription(description);
-        question.setTag(tag);
+        BeanUtils.copyProperties(questionBody, question);
         question.setCreator(user.getId());
-        question.setId(id);
-        questionService.createOrUpdate(question);
-        return "redirect:/";
+        Question questionResult = questionService.createOrUpdate(question);
+        return ResultDTO.okOf(questionResult);
     }
 
 }
