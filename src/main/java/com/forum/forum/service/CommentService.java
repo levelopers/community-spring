@@ -2,10 +2,11 @@ package com.forum.forum.service;
 
 import com.forum.forum.dto.CommentDTO;
 import com.forum.forum.enums.CommentTypeEnum;
-import com.forum.forum.exception.CustomizeErrorCode;
-import com.forum.forum.exception.CustomizeException;
+import com.forum.forum.exception.CustomException;
 import com.forum.forum.mapper.*;
 import com.forum.forum.model.*;
+import com.forum.forum.response.ResultCode;
+import com.forum.forum.security.jwt.JwtProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,38 +40,50 @@ public class CommentService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private UserService userService;
+
     @Transactional
-    public void insert(Comment comment) {
+    public Comment post(Comment comment, User currentUser) {
+
         if (comment.getParentId() == null || comment.getParentId() == 0) {
-            throw new CustomizeException(CustomizeErrorCode.TAGET_PARENT_NOT_FOUNT);
+            throw new CustomException(ResultCode.PARAM_NOT_COMPLETE, "comment.parentId");
         }
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
-            throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
+            throw new CustomException(ResultCode.PARAM_NOT_COMPLETE, "comment.type");
         }
-        //reply comment
-        if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
-            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+
+        if (comment.getId() == null) {
+            comment.setCommentator(currentUser.getId());
+            comment.setGmtCreate(System.currentTimeMillis());
+            comment.setGmtModified(comment.getGmtCreate());
+            comment.setCommentCount(0);
+            comment.setLikeCount(0L);
+            commentMapper.insert(comment);
+            return comment;
+        }
+        if(comment.getId()!=null) {
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getId());
             if (dbComment == null) {
-                throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
+                throw new CustomException(ResultCode.PARAM_IS_INVALID, "comment.id");
             }
-            commentMapper.insert(comment);
-
-            Comment parentComment = new Comment();
-            parentComment.setId(comment.getParentId());
-            parentComment.setCommentCount(1);
-            commentExtMapper.incCommentCount(parentComment);
-
-        } else {
-            // reply question
-            Question dbQuestion = questionMapper.selectByPrimaryKey(comment.getParentId());
-            if (dbQuestion == null) {
-                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            if (dbComment.getCommentator() != currentUser.getId()) {
+                throw new CustomException(ResultCode.USER_NOT_EXIST, "comment.commentator");
             }
-            commentMapper.insert(comment);
-            dbQuestion.setCommentCount(1);
-            questionExtMapper.incCommentCount(dbQuestion);
+            Comment updateComment = new Comment();
+            BeanUtils.copyProperties(dbComment,updateComment);
+            updateComment.setGmtModified(System.currentTimeMillis());
+            updateComment.setContent(comment.getContent());
+            CommentExample example = new CommentExample();
+            example.createCriteria().andIdEqualTo(comment.getId());
+            commentMapper.updateByExampleSelective(updateComment, example);
+            return updateComment;
         }
-
+        incCommentCount(comment);
+        return null;
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
@@ -104,4 +117,26 @@ public class CommentService {
 
         return commentDTOS;
     }
+
+    private void incCommentCount(Comment comment) {
+        if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+            if (dbComment == null) {
+                throw new CustomException(ResultCode.RESULT_DATA_NONE, "comment.parentId");
+            }
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
+        }
+        if (comment.getType() == CommentTypeEnum.QUESTION.getType()) {
+            Question dbQuestion = questionMapper.selectByPrimaryKey(comment.getParentId());
+            if (dbQuestion == null) {
+                throw new CustomException(ResultCode.RESULT_DATA_NONE, "comment.parentId");
+            }
+            dbQuestion.setCommentCount(1);
+            questionExtMapper.incCommentCount(dbQuestion);
+        }
+    }
+
 }

@@ -1,14 +1,12 @@
 package com.forum.forum.controller;
 
-import com.forum.forum.dto.CommentCreateDTO;
 import com.forum.forum.dto.CommentDTO;
-import com.forum.forum.dto.ResultDTO;
 import com.forum.forum.enums.CommentTypeEnum;
-import com.forum.forum.exception.CustomizeErrorCode;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.User;
+import com.forum.forum.response.Result;
 import com.forum.forum.service.CommentService;
-import org.apache.commons.lang3.StringUtils;
+import com.forum.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,35 +24,23 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    private UserService userService;
+
     @ResponseBody
     @PostMapping("/comment")
-    public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
+    public Object post(@RequestBody Comment comment,
                        HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
-        }
-        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
-            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
-        }
-        Comment comment = new Comment();
-        comment.setParentId(commentCreateDTO.getParentId());
-        comment.setContent(commentCreateDTO.getContent());
-        comment.setType(commentCreateDTO.getType());
-        comment.setCommentator(user.getId());
-        comment.setLikeCount(0L);
-        comment.setGmtCreate(System.currentTimeMillis());
-        comment.setGmtModified(System.currentTimeMillis());
-        comment.setCommentCount(0);
-        commentService.insert(comment);
-        return ResultDTO.okOf();
+        User currentUser = userService.getCurrentUser(request);
+        Comment commentResult = commentService.post(comment, currentUser);
+        return Result.okOf(commentResult);
     }
 
     @ResponseBody
     @GetMapping("/comment/{id}")
-    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
+    public Result<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
         List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
-        return ResultDTO.okOf(commentDTOS);
+        return Result.okOf(commentDTOS);
     }
 
 }

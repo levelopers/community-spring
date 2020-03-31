@@ -2,8 +2,8 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dto.CommentDTO;
 import com.forum.forum.dto.QuestionDTO;
-import com.forum.forum.dto.ResultDTO;
 import com.forum.forum.enums.CommentTypeEnum;
+import com.forum.forum.response.Result;
 import com.forum.forum.service.CommentService;
 import com.forum.forum.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,27 +30,25 @@ public class QuestionController {
 
     @GetMapping("/questions/{id}")
     @ResponseBody
-    public ResultDTO<QuestionDTO> question(@PathVariable(name = "id") Long id) {
+    public Result<QuestionDTO> question(@PathVariable(name = "id") Long id) {
         QuestionDTO questionDTO = questionService.findById(id);
         questionService.incView(id);
-        return ResultDTO.okOf(questionDTO);
+        return Result.okOf(questionDTO);
     }
 
     @GetMapping("/questions/{id}/comments")
     @ResponseBody
-    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
+    public Result<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
         List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
-        //TODO inc view logic
-//        questionService.incView(id);
-        return ResultDTO.okOf(commentDTOS);
+        return Result.okOf(commentDTOS);
     }
 
     @GetMapping("/questions")
     @ResponseBody
-    public ResultDTO<List<QuestionDTO>> index(@RequestParam(name = "limit", defaultValue = "20") Integer limit,
+    public Result<List<QuestionDTO>> index(@RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                         @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
 
         List<QuestionDTO> questionDTOList = questionService.list(limit, offset);
-        return ResultDTO.okOf(questionDTOList);
+        return Result.okOf(questionDTOList);
     }
 }

@@ -3,10 +3,12 @@ package com.forum.forum.service;
 import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.User;
 import com.forum.forum.model.UserExample;
+import com.forum.forum.security.jwt.JwtProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,6 +20,9 @@ public class UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     public User createOrUpdate(User user) {
         UserExample userExample = new UserExample();
@@ -49,5 +54,14 @@ public class UserService {
         userExample.createCriteria().andUsernameEqualTo(username);
         List<User> users = userMapper.selectByExample(userExample);
         return users.get(0);
+    }
+
+    public User findById(Long id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    public User getCurrentUser(HttpServletRequest request) {
+        String username =jwtProvider.getUserAccount(request);
+        return findByUsername(username);
     }
 }

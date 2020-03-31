@@ -1,14 +1,13 @@
 package com.forum.forum.service;
 
 import com.forum.forum.dto.QuestionDTO;
-import com.forum.forum.exception.CustomizeErrorCode;
-import com.forum.forum.exception.CustomizeException;
+import com.forum.forum.exception.CustomException;
 import com.forum.forum.mapper.QuestionExtMapper;
 import com.forum.forum.mapper.QuestionMapper;
-import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.QuestionExample;
 import com.forum.forum.model.User;
+import com.forum.forum.response.ResultCode;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,13 @@ import java.util.List;
 public class QuestionService {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private QuestionMapper questionMapper;
 
     @Autowired
     private QuestionExtMapper questionExtMapper;
+
+    @Autowired
+    private UserService userService;
 
     public List<QuestionDTO> list(Integer limit, Integer offset) {
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
@@ -39,23 +38,23 @@ public class QuestionService {
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            User user = userMapper.selectByPrimaryKey(question.getCreator());
+            User user = userService.findById(question.getCreator());
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
     }
 
-    public List<QuestionDTO> list(Long userId, Integer offset, Integer limit) {
+    public List<QuestionDTO> listByCurrentUser(User currentUser, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andCreatorEqualTo(userId);
+        questionExample.createCriteria().andCreatorEqualTo(currentUser.getId());
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            User user = userMapper.selectByPrimaryKey(question.getCreator());
-            questionDTO.setUser(user);
+            User questionCreator = userService.findById(question.getCreator());
+            questionDTO.setUser(questionCreator);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -64,17 +63,21 @@ public class QuestionService {
     public QuestionDTO findById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
-            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            throw new CustomException(ResultCode.RESULT_DATA_NONE, "question.id");
         }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
 
-        User user = userMapper.selectByPrimaryKey(question.getCreator());
+        User user = userService.findById(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }
 
-    public Question createOrUpdate(Question question) {
+    public Question post(Question questionBody, User currentUser) {
+        Question question = new Question();
+        BeanUtils.copyProperties(questionBody, question);
+        question.setCreator(currentUser.getId());
+
         if (question.getId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
@@ -86,17 +89,16 @@ public class QuestionService {
         } else {
             Question dbQuestion = questionMapper.selectByPrimaryKey(question.getId());
             if (dbQuestion == null) {
-                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+                throw new CustomException(ResultCode.RESULT_DATA_NONE, "question.id");
             }
-            Question updateQuestion = new Question();
-            updateQuestion.setGmtModified(System.currentTimeMillis());
-            updateQuestion.setTitle(question.getTitle());
-            updateQuestion.setDescription(question.getDescription());
-            updateQuestion.setTag(question.getTag());
+            question.setGmtModified(System.currentTimeMillis());
+            question.setTitle(questionBody.getTitle());
+            question.setDescription(questionBody.getDescription());
+            question.setTag(questionBody.getTag());
             QuestionExample example = new QuestionExample();
-            example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
-            return updateQuestion;
+            example.createCriteria().andIdEqualTo(questionBody.getId());
+            questionMapper.updateByExampleSelective(question, example);
+            return question;
         }
     }
 

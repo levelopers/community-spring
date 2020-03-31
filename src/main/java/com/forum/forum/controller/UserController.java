@@ -1,9 +1,7 @@
 package com.forum.forum.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.User;
-import com.forum.forum.model.UserExample;
 import com.forum.forum.response.Result;
 import com.forum.forum.response.ResultCode;
 import com.forum.forum.security.jwt.JwtProvider;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author ：Zack
@@ -50,9 +46,9 @@ public class UserController {
             response.addHeader("Authorization", "Bearer " + token);
             JSONObject result = new JSONObject();
             result.put("token", token);
-            return Result.SUCCESS(result);
+            return Result.okOf(result);
         } else {
-            return Result.FAIL(ResultCode.USER_LOGIN_ERROR);
+            return Result.errorOf(ResultCode.USER_LOGIN_ERROR);
         }
     }
 

@@ -1,12 +1,10 @@
 package com.forum.forum.security.jwt;
 
-import com.forum.forum.mapper.UserMapper;
 import com.forum.forum.model.User;
-import com.forum.forum.model.UserExample;
+import com.forum.forum.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author ：Zack
@@ -27,7 +24,7 @@ import java.util.List;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -43,21 +40,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String user =jwtProvider.getUserAccount(token);
-        if (user != null) {
-            UserExample userExample = new UserExample();
-            userExample.createCriteria().andUsernameEqualTo(user);
-            List<User> users = userMapper.selectByExample(userExample);
-//            UserEntity userEntity = userJPA.findByUsername(user);
+        String username = jwtProvider.getUserAccount(token);
+        if (username != null) {
+            User user = userService.findByUsername(username);
             // TODO table authories constraints user
-//            SimpleGrantedAuthority sga = new SimpleGrantedAuthority(users.get(0).getRole());
-            ArrayList<SimpleGrantedAuthority> list = new ArrayList<>();
-//            list.add(sga);
-            UsernamePasswordAuthenticationToken auth
-                    = new UsernamePasswordAuthenticationToken(
-                    users.get(0).getUsername(),
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    user.getUsername(),
                     null,
-                    list);
+                    new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(auth);
             return auth;
         }
