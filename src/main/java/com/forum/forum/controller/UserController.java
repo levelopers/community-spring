@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -52,4 +53,10 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user")
+    @ResponseBody
+    public Result<User> user(HttpServletRequest request) {
+        User user = userService.getCurrentUser(request);
+        return Result.okOf(user);
+    }
 }

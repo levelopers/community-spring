@@ -1,21 +1,7 @@
 
 
-#  server.port=8887
-#    github.client.id=26ae8da71cfa3d44c7af
-#    github.client.secret=84240deac5cfd77422aeb974d843d3e7178ec955
-#    github.redirect.url=http://localhost:8887/callback
-#    spring.datasource.url=jdbc:h2:D:\\dbs/H2/forum
-#    spring.datasource.driver-class-name=org.h2.Driver
-#    spring.datasource.username=sa
-#    spring.datasource.password=123
-#    mybatis.configuration.map-underscore-to-camel-case=true
-#    mybatis.type-aliases-package=com.forum.forum.mapper
-#    mybatis.mapper-locations=classpath:mapper/*.xml
-#logging.file.path=logs/community.log
-#logging.level.com.forum.forum.mapper=debug
-#logging.file.max-size=10MB
-#logging.file.max-history=100
-
+server:
+  port: 8887
 spring:
   datasource:
     url: jdbc:h2:D:\\dbs/H2/forum
@@ -25,17 +11,16 @@ spring:
 #  jpa:
 #    hibernate:
 #      ddl-auto: update
-  queries:
-    users-query: select username, password, active from user where username=?
-    roles-query: select username, role from user where username=?
-
-
-jwtSecret: me.zack
-jwtExpiration: 86400
-server:
-  port: 8887
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.forum.forum.mapper
   mapper-locations: classpath:mapper/*.xml
+
+jwtSecret: me.zack
+jwtExpiration: 86400
+
+#logging.file.path=logs/community.log
+#logging.level.com.forum.forum.mapper=debug
+#logging.file.max-size=10MB
+#logging.file.max-history=100

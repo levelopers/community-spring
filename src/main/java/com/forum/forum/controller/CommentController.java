@@ -36,6 +36,11 @@ public class CommentController {
         return Result.okOf(commentResult);
     }
 
+    /**
+     * @description get all subcomments by parent comment id
+     * @param id
+     * @return
+     */
     @ResponseBody
     @GetMapping("/comment/{id}")
     public Result<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
