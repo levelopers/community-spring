@@ -1,11 +1,14 @@
-create table user
+create table t_user
 (
-	id int auto_increment,
-	account_id varchar(100),
-	username varchar(50),
-	token char(36),
-	gmt_create bigint,
-	gmt_modified bigint,
-	constraint user_pk
-		primary key (id)
+	id bigserial not null
+		constraint user_pk
+			primary key,
+	ACCOUNT_ID varchar(100),
+	USERNAME varchar(50),
+	TOKEN char(36),
+	GMT_CREATE bigint,
+	GMT_MODIFIED bigint,
+	AVATAR_URL varchar(100),
+	PASSWORD varchar(100)
 );
+

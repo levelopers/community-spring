@@ -4,10 +4,13 @@ server:
   port: 8887
 spring:
   datasource:
-    url: jdbc:h2:D:\\dbs/H2/forum
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: 123
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: root
+    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
 #  jpa:
 #    hibernate:
 #      ddl-auto: update

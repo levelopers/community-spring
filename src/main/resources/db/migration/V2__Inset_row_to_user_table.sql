@@ -1,1 +1,0 @@
--- insert into user (username,account_id,token,gmt_create,gmt_modified) values (1,1,1,1,1);

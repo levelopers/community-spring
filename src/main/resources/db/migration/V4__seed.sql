@@ -1,5 +1,8 @@
 
-INSERT INTO question (
+INSERT INTO t_user (username,password) VALUES ('zack','$2a$10$VpsnPMGEEi4LmqBSKeqVXep4VHwkG1luPtrEewN1d6mkAjCUK1Fs6');
+INSERT INTO t_user (username,password) VALUES ('allen','$2a$10$VpsnPMGEEi4LmqBSKeqVXep4VHwkG1luPtrEewN1d6mkAjCUK1Fs6');
+
+INSERT INTO QUESTION (
 TITLE,
 DESCRIPTION,
 GMT_CREATE,
@@ -21,7 +24,7 @@ TAG) VALUES (
 );
 
 
-INSERT INTO question (
+INSERT INTO QUESTION (
 TITLE,
 DESCRIPTION,
 GMT_CREATE,
@@ -42,18 +45,7 @@ TAG) VALUES (
 'tag1,tag2'
 );
 
---     ID            BIGINT auto_increment
---         primary key,
---     PARENT_ID     BIGINT not null,
---     TYPE          INT    not null,
---     COMMENTATOR   BIGINT not null,
---     GMT_CREATE    BIGINT not null,
---     GMT_MODIFIED  BIGINT not null,
---     LIKE_COUNT    BIGINT default 0,
---     CONTENT       VARCHAR(1024),
---     COMMENT_COUNT INT    default 0
-
-INSERT INTO comment (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR,
@@ -73,7 +65,7 @@ COMMENT_COUNT) VALUES (
 );
 
 
-INSERT INTO comment (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR,
@@ -92,7 +84,7 @@ COMMENT_COUNT) VALUES (
 1
 );
 
-INSERT INTO comment (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR,

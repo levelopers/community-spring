@@ -16,6 +16,9 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <env.JDBC_DATABASE_URL>${env.JDBC_DATABASE_URL}</env.JDBC_DATABASE_URL>
+        <env.JDBC_DATABASE_USERNAME>${env.JDBC_DATABASE_USERNAME}</env.JDBC_DATABASE_USERNAME>
+        <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
     </properties>
 
     <dependencies>
@@ -54,6 +57,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.4.0</version>
@@ -63,12 +71,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
         </dependency>
 
         <dependency>
@@ -126,15 +128,16 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.2.4</version>
                 <configuration>
-                    <url>jdbc:h2:D:\\dbs/H2/forum</url>
-                    <user>sa</user>
-                    <password>123</password>
+<!--                    <url>jdbc:postgresql://localhost:5432/postgres</url>-->
+                    <url>${env.JDBC_DATABASE_URL}</url>
+                    <user>${env.JDBC_DATABASE_USERNAME}</user>
+                    <password>${env.JDBC_DATABASE_PASSWORD}</password>
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.200</version>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.12</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -144,9 +147,9 @@
                 <version>1.4.0</version>
                 <dependencies>
                     <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.200</version>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.12</version>
                     </dependency>
                 </dependencies>
             </plugin>
