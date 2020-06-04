@@ -48,4 +48,11 @@ public class CommentController {
         return Result.okOf(commentDTOS);
     }
 
+    @ResponseBody
+    @PostMapping("/comment/{id}/like")
+    public Result incLikeCount(@PathVariable(name = "id") Long id) {
+        commentService.incLikeCount(id);
+        return Result.okOf();
+    }
+
 }

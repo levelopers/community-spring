@@ -33,7 +33,9 @@ public class QuestionService {
     private UserService userService;
 
     public List<QuestionDTO> list(Integer limit, Integer offset) {
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("GMT_MODIFIED DESC");
+        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
@@ -48,6 +50,7 @@ public class QuestionService {
     public List<QuestionDTO> listByCurrentUser(User currentUser, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(currentUser.getId());
+        questionExample.setOrderByClause("GMT_MODIFIED DESC");
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {

@@ -1,6 +1,7 @@
 package com.forum.forum.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.forum.forum.exception.CustomException;
 import com.forum.forum.model.User;
 import com.forum.forum.response.Result;
 import com.forum.forum.response.ResultCode;
@@ -32,9 +33,9 @@ public class UserController {
 
     @PostMapping("/users/signup")
     @ResponseBody
-    public User signUp(@RequestBody User userBody) {
-        User userResult = userService.createOrUpdate(userBody);
-        return  userResult;
+    public Result signUp(@RequestBody User userBody) {
+        User newUser = userService.createUser(userBody);
+        return Result.okOf(newUser);
     }
 
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
@@ -49,7 +50,7 @@ public class UserController {
             result.put("token", token);
             return Result.okOf(result);
         } else {
-            return Result.errorOf(ResultCode.USER_LOGIN_ERROR);
+            throw new CustomException(ResultCode.USER_LOGIN_ERROR, "user.username / user.password");
         }
     }
 
@@ -59,4 +60,11 @@ public class UserController {
         User user = userService.getCurrentUser(request);
         return Result.okOf(user);
     }
+
+//    @PutMapping("/user")
+//    @ResponseBody
+//    public Result<User> updateUser(HttpServletRequest request) {
+//        User userResult = userService.createOrUpdate(userBody);
+//        return  userResult;
+//    }
 }

@@ -8,4 +8,5 @@ import com.forum.forum.model.Comment;
  */
 public interface CommentExtMapper {
     int incCommentCount(Comment record);
+    int incLikeCount(Comment record);
 }

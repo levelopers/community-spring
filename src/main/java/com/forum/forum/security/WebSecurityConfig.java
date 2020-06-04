@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,10 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 //TODO add authorities role authentication
-                .antMatchers("/comment/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/comment/**").authenticated()
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/publish/**").authenticated()
-                .antMatchers("/questions/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/questions/**").authenticated() //default page?
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/users/**").permitAll()
                 .anyRequest().permitAll()

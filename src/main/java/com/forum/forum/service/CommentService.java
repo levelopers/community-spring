@@ -55,17 +55,16 @@ public class CommentService {
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
             throw new CustomException(ResultCode.PARAM_NOT_COMPLETE, "comment.type");
         }
-
+        Comment newComment = new Comment();
         if (comment.getId() == null) {
-            comment.setCommentator(currentUser.getId());
-            comment.setGmtCreate(System.currentTimeMillis());
-            comment.setGmtModified(comment.getGmtCreate());
-            comment.setCommentCount(0);
-            comment.setLikeCount(0L);
-            commentMapper.insert(comment);
-            return comment;
-        }
-        if(comment.getId()!=null) {
+            BeanUtils.copyProperties(comment,newComment);
+            newComment.setCommentator(currentUser.getId());
+            newComment.setGmtCreate(System.currentTimeMillis());
+            newComment.setGmtModified(newComment.getGmtCreate());
+            newComment.setCommentCount(0);
+            newComment.setLikeCount(0L);
+            commentMapper.insert(newComment);
+        } else {
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getId());
             if (dbComment == null) {
                 throw new CustomException(ResultCode.PARAM_IS_INVALID, "comment.id");
@@ -73,17 +72,18 @@ public class CommentService {
             if (dbComment.getCommentator() != currentUser.getId()) {
                 throw new CustomException(ResultCode.USER_NOT_EXIST, "comment.commentator");
             }
-            Comment updateComment = new Comment();
-            BeanUtils.copyProperties(dbComment,updateComment);
-            updateComment.setGmtModified(System.currentTimeMillis());
-            updateComment.setContent(comment.getContent());
+            BeanUtils.copyProperties(dbComment,newComment);
+            newComment.setGmtModified(System.currentTimeMillis());
+            newComment.setContent(comment.getContent());
             CommentExample example = new CommentExample();
             example.createCriteria().andIdEqualTo(comment.getId());
-            commentMapper.updateByExampleSelective(updateComment, example);
-            return updateComment;
+            commentMapper.updateByExampleSelective(newComment, example);
         }
-        incCommentCount(comment);
-        return null;
+        if(newComment.getId()==null) {
+            return null;
+        }
+        incCommentCount(newComment);
+        return newComment;
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
@@ -116,6 +116,15 @@ public class CommentService {
         }).collect(Collectors.toList());
 
         return commentDTOS;
+    }
+
+    public void incLikeCount(Long commentId) {
+        Comment dbComment = commentMapper.selectByPrimaryKey(commentId);
+        if (dbComment == null) {
+            throw new CustomException(ResultCode.DATA_IS_WRONG, "comment.id");
+        }
+        dbComment.setLikeCount(1L);
+        commentExtMapper.incLikeCount(dbComment);
     }
 
     private void incCommentCount(Comment comment) {

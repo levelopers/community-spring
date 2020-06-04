@@ -5,6 +5,8 @@ import com.forum.forum.response.Result;
 import com.forum.forum.response.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -25,10 +27,18 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(CustomException.class)
-	public Result handleException(CustomException e) {
+	public ResponseEntity handleException(CustomException e) {
 	    e.printStackTrace();
-        return new Result(e.getResultCode(), e.getData());
-	}
+        if (e.getResultCode().code() == 0) {
+            return new ResponseEntity(new Result(e.getResultCode(), e.getData()), HttpStatus.OK);
+        } else if (e.getResultCode().code() > 70000) {
+            return new ResponseEntity(new Result(e.getResultCode(), e.getData()), HttpStatus.UNAUTHORIZED);
+        } else if (e.getResultCode().code() > 0) {
+            return new ResponseEntity(new Result(e.getResultCode(), e.getData()), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(new Result(e.getResultCode(), e.getData()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     public Result handleException(Exception e) {
@@ -55,9 +65,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public Result handleOtherException(Exception e){
+    public ResponseEntity handleOtherException(Exception e){
         e.printStackTrace();
-        return new Result(ResultCode.SYSTEM_INNER_ERROR);
+        return new ResponseEntity(new Result(ResultCode.SYSTEM_INNER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
