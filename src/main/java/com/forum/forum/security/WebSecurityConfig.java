@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/comment/**").authenticated()
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/publish/**").authenticated()
-                .antMatchers(HttpMethod.POST,"/questions/**").authenticated() //default page?
+                .antMatchers(HttpMethod.POST,"/questions/**").authenticated()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/users/**").permitAll()
                 .anyRequest().permitAll()

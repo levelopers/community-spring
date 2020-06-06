@@ -30,32 +30,32 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User createOrUpdate(User user) {
-        User dbuser = new User();
-        if (user.getId() != null) {
-            dbuser = userMapper.selectByPrimaryKey(user.getId());
-        } else if (user.getUsername() != null) {
-            dbuser = findByUsername(user.getUsername());
-        }
-        if (dbuser != null) {
-            dbuser.setUsername(user.getUsername());
-            dbuser.setToken(user.getToken());
-            dbuser.setAvatarUrl(user.getAvatarUrl());
-            dbuser.setGmtModified(System.currentTimeMillis());
-            UserExample example = new UserExample();
-            example.createCriteria().andIdEqualTo(dbuser.getId());
-            userMapper.updateByExampleSelective(dbuser, example);
-            return dbuser;
-        } else {
-            User newUser = new User();
-            newUser.setGmtCreate(System.currentTimeMillis());
-            newUser.setGmtModified(user.getGmtCreate());
-            newUser.setUsername(user.getUsername());
-            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            userMapper.insert(newUser);
-            return newUser;
-        }
-    }
+//    public User createOrUpdate(User user) {
+//        User dbuser = new User();
+//        if (user.getId() != null) {
+//            dbuser = userMapper.selectByPrimaryKey(user.getId());
+//        } else if (user.getUsername() != null) {
+//            dbuser = findByUsername(user.getUsername());
+//        }
+//        if (dbuser != null) {
+//            dbuser.setUsername(user.getUsername());
+//            dbuser.setToken(user.getToken());
+//            dbuser.setAvatarUrl(user.getAvatarUrl());
+//            dbuser.setGmtModified(System.currentTimeMillis());
+//            UserExample example = new UserExample();
+//            example.createCriteria().andIdEqualTo(dbuser.getId());
+//            userMapper.updateByExampleSelective(dbuser, example);
+//            return dbuser;
+//        } else {
+//            User newUser = new User();
+//            newUser.setGmtCreate(System.currentTimeMillis());
+//            newUser.setGmtModified(user.getGmtCreate());
+//            newUser.setUsername(user.getUsername());
+//            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+//            userMapper.insert(newUser);
+//            return newUser;
+//        }
+//    }
 
     public User createUser(User user) {
         User dbuser = findByUsername(user.getUsername());
@@ -70,6 +70,22 @@ public class UserService {
         userMapper.insert(newUser);
         return newUser;
     }
+
+//    public User updateUser(User user) {
+//        User dbuser = userMapper.selectByPrimaryKey(user.getId());
+//        if (dbuser == null) {
+//            throw new CustomException(ResultCode.USER_NOT_EXIST, "user.id");
+//        }
+//        dbuser.setUsername(user.getUsername());
+//        dbuser.setPassword(passwordEncoder.encode(user.getPassword()));
+//        dbuser.setToken(user.getToken());
+//        dbuser.setAvatarUrl(user.getAvatarUrl());
+//        dbuser.setGmtModified(System.currentTimeMillis());
+//        UserExample example = new UserExample();
+//        example.createCriteria().andIdEqualTo(dbuser.getId());
+//        userMapper.updateByExampleSelective(dbuser, example);
+//        return dbuser;
+//    }
 
     public User findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
@@ -92,4 +108,13 @@ public class UserService {
         String username = jwtProvider.getUserAccount(request);
         return findByUsername(username);
     }
+
+//    public void uploadImage(HttpServletRequest request, byte [] imgByte) {
+//        User user = this.getCurrentUser(request);
+//        user.setAvatarUrl(imgByte);
+//        user.setGmtModified(System.currentTimeMillis());
+//        UserExample example = new UserExample();
+//        example.createCriteria().andIdEqualTo(user.getId());
+//        userMapper.updateByExampleSelective(user, example);
+//    }
 }
