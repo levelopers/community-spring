@@ -8,7 +8,7 @@ create table t_user
 	TOKEN char(36),
 	GMT_CREATE bigint,
 	GMT_MODIFIED bigint,
-	AVATAR_URL varchar(100),
+	AVATAR_URL varbinary,
 	PASSWORD varchar(100)
 );
 
