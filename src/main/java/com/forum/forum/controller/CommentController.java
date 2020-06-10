@@ -51,8 +51,16 @@ public class CommentController {
     @ResponseBody
     @PostMapping("/comment/{id}/like")
     public Result incLikeCount(@PathVariable(name = "id") Long id) {
-        commentService.incLikeCount(id);
-        return Result.okOf();
+        // TODO db record track who liked
+        int result = commentService.incLikeCount(id);
+        return Result.okOf(result);
+    }
+
+    @ResponseBody
+    @PostMapping("/comment/{id}/dislike")
+    public Result decLikeCount(@PathVariable(name = "id") Long id) {
+        int result = commentService.decLikeCount(id);
+        return Result.okOf(result);
     }
 
 }

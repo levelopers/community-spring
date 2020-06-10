@@ -118,13 +118,24 @@ public class CommentService {
         return commentDTOS;
     }
 
-    public void incLikeCount(Long commentId) {
+    public int incLikeCount(Long commentId) {
         Comment dbComment = commentMapper.selectByPrimaryKey(commentId);
         if (dbComment == null) {
             throw new CustomException(ResultCode.DATA_IS_WRONG, "comment.id");
         }
         dbComment.setLikeCount(1L);
-        commentExtMapper.incLikeCount(dbComment);
+        int result = commentExtMapper.incLikeCount(dbComment);
+        return result;
+    }
+
+    public int decLikeCount(Long commentId) {
+        Comment dbComment = commentMapper.selectByPrimaryKey(commentId);
+        if (dbComment == null) {
+            throw new CustomException(ResultCode.DATA_IS_WRONG, "comment.id");
+        }
+        dbComment.setLikeCount(-1L);
+        int result = commentExtMapper.incLikeCount(dbComment);
+        return result;
     }
 
     private void incCommentCount(Comment comment) {
