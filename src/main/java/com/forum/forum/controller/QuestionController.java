@@ -47,7 +47,6 @@ public class QuestionController {
     @ResponseBody
     public Result<List<QuestionDTO>> index(@RequestParam(name = "limit", defaultValue = "20") Integer limit,
                                         @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
-
         List<QuestionDTO> questionDTOList = questionService.list(limit, offset);
         return Result.okOf(questionDTOList);
     }

@@ -71,21 +71,26 @@ public class UserService {
         return newUser;
     }
 
-//    public User updateUser(User user) {
-//        User dbuser = userMapper.selectByPrimaryKey(user.getId());
-//        if (dbuser == null) {
-//            throw new CustomException(ResultCode.USER_NOT_EXIST, "user.id");
-//        }
-//        dbuser.setUsername(user.getUsername());
-//        dbuser.setPassword(passwordEncoder.encode(user.getPassword()));
-//        dbuser.setToken(user.getToken());
-//        dbuser.setAvatarUrl(user.getAvatarUrl());
-//        dbuser.setGmtModified(System.currentTimeMillis());
-//        UserExample example = new UserExample();
-//        example.createCriteria().andIdEqualTo(dbuser.getId());
-//        userMapper.updateByExampleSelective(dbuser, example);
-//        return dbuser;
-//    }
+    public User updateUser(User user) {
+        User dbuser = userMapper.selectByPrimaryKey(user.getId());
+        if (dbuser == null) {
+            throw new CustomException(ResultCode.USER_NOT_EXIST, "user.id");
+        }
+        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+            dbuser.setUsername(user.getUsername());
+        }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            dbuser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+            dbuser.setAvatarUrl(user.getAvatarUrl());
+        }
+        dbuser.setGmtModified(System.currentTimeMillis());
+        UserExample example = new UserExample();
+        example.createCriteria().andIdEqualTo(dbuser.getId());
+        userMapper.updateByExampleSelective(dbuser, example);
+        return dbuser;
+    }
 
     public User findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
