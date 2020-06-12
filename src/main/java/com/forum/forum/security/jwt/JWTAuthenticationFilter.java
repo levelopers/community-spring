@@ -43,13 +43,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String username = jwtProvider.getUserAccount(token);
         if (username != null) {
             User user = userService.findByUsername(username);
-            // TODO table authories constraints user
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    user.getUsername(),
-                    null,
-                    new ArrayList<>());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            return auth;
+            if (user != null) {
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),
+                        null,
+                        new ArrayList<>());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                return auth;
+            }
         }
         return null;
     }
