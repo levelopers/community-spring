@@ -9,17 +9,17 @@
 
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
 
-<!--        <jdbcConnection driverClass="org.postgresql.Driver"-->
-<!--                        connectionURL="${env.JDBC_DATABASE_URL}"-->
-<!--                        userId="${env.JDBC_DATABASE_USERNAME}"-->
-<!--                        password="${env.JDBC_DATABASE_PASSWORD}">-->
-<!--        </jdbcConnection>-->
-
-        <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:D:\\dbs/H2/forum"
-                        userId="sa"
-                        password="123">
+        <jdbcConnection driverClass="org.postgresql.Driver"
+                        connectionURL="${env.JDBC_DATABASE_URL}"
+                        userId="${env.JDBC_DATABASE_USERNAME}"
+                        password="${env.JDBC_DATABASE_PASSWORD}">
         </jdbcConnection>
+
+<!--        <jdbcConnection driverClass="org.h2.Driver"-->
+<!--                        connectionURL="jdbc:h2:D:\\dbs/H2/forum"-->
+<!--                        userId="sa"-->
+<!--                        password="123">-->
+<!--        </jdbcConnection>-->
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
