@@ -16,9 +16,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-<!--        <env.JDBC_DATABASE_URL>jdbc:h2:D:\\dbs/H2/forum</env.JDBC_DATABASE_URL>-->
-<!--        <env.JDBC_DATABASE_USERNAME>sa</env.JDBC_DATABASE_USERNAME>-->
-<!--        <env.JDBC_DATABASE_PASSWORD>123</env.JDBC_DATABASE_PASSWORD>-->
         <env.JDBC_DATABASE_URL>${env.JDBC_DATABASE_URL}</env.JDBC_DATABASE_URL>
         <env.JDBC_DATABASE_USERNAME>${env.JDBC_DATABASE_USERNAME}</env.JDBC_DATABASE_USERNAME>
         <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
@@ -173,9 +170,6 @@
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
                         <version>42.2.12</version>
-<!--                        <groupId>com.h2database</groupId>-->
-<!--                        <artifactId>h2</artifactId>-->
-<!--                        <version>1.4.200</version>-->
                     </dependency>
                 </dependencies>
             </plugin>
