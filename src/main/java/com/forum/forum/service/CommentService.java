@@ -1,6 +1,7 @@
 package com.forum.forum.service;
 
 import com.forum.forum.dto.CommentDTO;
+import com.forum.forum.dto.UserDTO;
 import com.forum.forum.enums.CommentTypeEnum;
 import com.forum.forum.exception.CustomException;
 import com.forum.forum.mapper.*;
@@ -111,7 +112,7 @@ public class CommentService {
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
-            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            commentDTO.setUser(new UserDTO(userMap.get(comment.getCommentator())));
             return commentDTO;
         }).collect(Collectors.toList());
 

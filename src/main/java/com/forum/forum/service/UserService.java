@@ -8,6 +8,7 @@ import com.forum.forum.response.ResultCode;
 import com.forum.forum.security.jwt.JwtProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Value("${defaultUserAvatartUrl}")
+    private String defaultUserAvatartUrl;
+
     public User createUser(User user) {
         User dbuser = findByUsername(user.getUsername());
         if (dbuser != null) {
@@ -40,6 +44,7 @@ public class UserService {
         newUser.setGmtModified(user.getGmtCreate());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setAvatarUrl(defaultUserAvatartUrl);
         userMapper.insert(newUser);
         return newUser;
     }

@@ -1,6 +1,5 @@
 package com.forum.forum.dto;
 
-import com.forum.forum.model.User;
 import lombok.Data;
 
 /**
@@ -18,5 +17,5 @@ public class CommentDTO {
     private Long likeCount;
     private Integer commentCount;
     private String content;
-    private User user;
+    private UserDTO user;
 }

@@ -1,6 +1,7 @@
 package com.forum.forum.service;
 
 import com.forum.forum.dto.QuestionDTO;
+import com.forum.forum.dto.UserDTO;
 import com.forum.forum.exception.CustomException;
 import com.forum.forum.mapper.QuestionExtMapper;
 import com.forum.forum.mapper.QuestionMapper;
@@ -41,7 +42,7 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             User user = userService.findById(question.getCreator());
-            questionDTO.setUser(user);
+            questionDTO.setUser(new UserDTO(user));
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -57,7 +58,7 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             User questionCreator = userService.findById(question.getCreator());
-            questionDTO.setUser(questionCreator);
+            questionDTO.setUser(new UserDTO(questionCreator));
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -72,7 +73,7 @@ public class QuestionService {
         BeanUtils.copyProperties(question, questionDTO);
 
         User user = userService.findById(question.getCreator());
-        questionDTO.setUser(user);
+        questionDTO.setUser(new UserDTO(user));
         return questionDTO;
     }
 
