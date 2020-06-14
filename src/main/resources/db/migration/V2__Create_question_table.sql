@@ -3,7 +3,7 @@ create table QUESTION
 	ID bigserial not null
 		constraint QUESTION_pk
 			primary key,
-	TITLE varchar(50),
+	TITLE varchar(250),
 	DESCRIPTION varchar(1024),
 	GMT_CREATE bigint,
 	GMT_MODIFIED bigint,

@@ -16,8 +16,10 @@ COMMENT_COUNT,
 VIEW_COUNT,
 LIKE_COUNT,
 TAG) VALUES (
-'question1',
-'this is a description',
+'What is the difference between Promises and Observables?',
+'What is the difference between Promise and Observable in Angular?
+
+An example on each would be helpful in understanding both the cases. In what scenario can we use each case?',
 1585385895854,
 1585385895854,
 1,
@@ -38,8 +40,12 @@ COMMENT_COUNT,
 VIEW_COUNT,
 LIKE_COUNT,
 TAG) VALUES (
-'question2',
-'All descendents of Object inherit the hasOwnProperty method. This method can be used to determine whether an object has the specified property as a direct property of that object; unlike the in operator, this method does not check for a property in the object''s prototype chain. If an Object is an Array, hasOwnProperty  method can check whether an index exists.',
+'What is the difference between angular-route and angular-ui-router?',
+'I''m planning to use AngularJS in my big applications. So I''m in the process to find out the right modules to use.
+
+What is the difference between ngRoute (angular-route.js) and ui-router (angular-ui-router.js) modules?
+
+In many articles when ngRoute is used, route is configured with $routeProvider. However, when used with ui-router, route is configured with $stateProvider and $urlRouterProvider.',
 1585385895854,
 1585385895854,
 2,
@@ -47,6 +53,27 @@ TAG) VALUES (
 2,
 2,
 'tag1,tag2'
+);
+
+INSERT INTO QUESTION (
+TITLE,
+DESCRIPTION,
+GMT_CREATE,
+GMT_MODIFIED,
+CREATOR,
+COMMENT_COUNT,
+VIEW_COUNT,
+LIKE_COUNT,
+TAG) VALUES (
+'SORRY HORDE',
+'You’re gonna have to deal with longer AV queues now because of the AV changes. Instead of actually fixing the BG they made things worse for everyone again. Horde had to wait in a long Q but they got the win every time. Ally has 5 minute Qs but they get good rep from druids in trade of a win.',
+1585385895854,
+1585385895854,
+1,
+0,
+1,
+12,
+'For the Horde'
 );
 
 INSERT INTO COMMENT (
@@ -64,7 +91,18 @@ COMMENT_COUNT) VALUES (
 1585385895854,
 1585385895854,
 12,
-'1st comment to question 1',
+'Promise
+
+A Promise handles a single event when an async operation completes or fails.
+Note: There are Promise libraries out there that support cancellation, but ES6 Promise doesn''t so far.
+Observable
+
+An Observable is like a Stream (in many languages) and allows to pass zero or more events where the callback is called for each event.
+
+Often Observable is preferred over Promise because it provides the features of Promise and more. With Observable it doesn''t matter if you want to handle 0, 1, or multiple events. You can utilize the same API in each case.
+
+Observable also has the advantage over Promise to be cancelable. If the result of an HTTP request to a server or some other expensive async operation isn''t needed anymore, the Subscription of an Observable allows to cancel the subscription, while a Promise will eventually call the success or failed callback even when you don''t need the notification or the result it provides anymore.
+',
 0
 );
 
@@ -84,7 +122,7 @@ COMMENT_COUNT) VALUES (
 1585385895854,
 1585385895854,
 13,
-'2nd comment to question 1',
+'As far as I am using Http in Angular, I agree that in the normal use cases there is not much difference when using Observable over Promise. None of the advantages are really relevant here in practice. Hope I can see some advanced use case in the future :)',
 1
 );
 
@@ -103,6 +141,6 @@ COMMENT_COUNT) VALUES (
 1585385895854,
 1585385895854,
 13,
-'1st comment to comment 2',
+'If you want to use the reactive style, just use observables everywhere. If you have observables only you can easy compose. If you mix them it''s not so clean anymore. If you don''t care about reactive style, you can use promise for single events where you don''t care about cancelable and observable for streams of events.',
 0
 );

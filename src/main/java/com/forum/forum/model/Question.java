@@ -136,7 +136,7 @@ public class Question {
      * @mbg.generated Sat Jun 13 19:51:57 EDT 2020
      */
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
     /**
@@ -160,7 +160,7 @@ public class Question {
      * @mbg.generated Sat Jun 13 19:51:57 EDT 2020
      */
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
     /**

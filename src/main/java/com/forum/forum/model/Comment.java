@@ -271,7 +271,7 @@ public class Comment {
      * @mbg.generated Sat Jun 13 19:51:57 EDT 2020
      */
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
 
     /**
