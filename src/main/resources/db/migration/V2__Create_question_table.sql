@@ -4,7 +4,7 @@ create table QUESTION
 		constraint QUESTION_pk
 			primary key,
 	TITLE varchar(50),
-	DESCRIPTION text,
+	DESCRIPTION varchar(1024),
 	GMT_CREATE bigint,
 	GMT_MODIFIED bigint,
 	CREATOR bigint not null,
