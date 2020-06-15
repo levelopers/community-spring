@@ -1,8 +1,6 @@
 create table t_user
 (
-	id bigserial
-		constraint user_pk
-			primary key,
+	id bigserial primary key,
 	USERNAME varchar(50),
 	GMT_CREATE bigint,
 	GMT_MODIFIED bigint,

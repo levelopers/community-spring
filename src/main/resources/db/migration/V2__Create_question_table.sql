@@ -1,8 +1,6 @@
 create table QUESTION
 (
-	ID bigserial
-		constraint QUESTION_pk
-			primary key,
+	ID bigserial primary key,
 	TITLE varchar(250),
 	DESCRIPTION varchar(1024),
 	GMT_CREATE bigint,
