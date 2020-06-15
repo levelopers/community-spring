@@ -1,6 +1,6 @@
 create table QUESTION
 (
-	ID bigserial not null
+	ID bigserial
 		constraint QUESTION_pk
 			primary key,
 	TITLE varchar(250),

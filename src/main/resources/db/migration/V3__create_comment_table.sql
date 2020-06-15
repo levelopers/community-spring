@@ -1,6 +1,6 @@
 create table COMMENT
 (
-	ID bigserial not null
+	ID bigserial
 		constraint COMMENT_pk
 			primary key,
 	PARENT_ID bigint not null,
