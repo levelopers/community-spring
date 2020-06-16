@@ -72,7 +72,7 @@ TAG) VALUES (
 1,
 0,
 1,
-12,
+13,
 'For the Horde'
 );
 
