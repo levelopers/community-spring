@@ -25,7 +25,7 @@ import java.util.List;
 public class ProfileController {
 
     @Autowired
-   private QuestionService questionService;
+    private QuestionService questionService;
 
     @Autowired
     private UserService userService;
@@ -33,9 +33,9 @@ public class ProfileController {
     @GetMapping("profile/{action}")
     @ResponseBody
     public Result<QuestionDTO> profile(@PathVariable(name = "action") String action,
-                          HttpServletRequest request,
-                          @RequestParam(name = "offset", defaultValue = "0") Integer offset,
-                          @RequestParam(name = "limit", defaultValue = "20") Integer limit) {
+                                       HttpServletRequest request,
+                                       @RequestParam(name = "offset", defaultValue = "0") Integer offset,
+                                       @RequestParam(name = "limit", defaultValue = "20") Integer limit) {
 
         if ("questions".equals(action)) {
             User currentUser = userService.getCurrentUser(request);
@@ -43,7 +43,7 @@ public class ProfileController {
             return Result.okOf(questionDTOList);
 
         } else {
-            throw new CustomException(ResultCode.PARAM_IS_INVALID,"path variable action");
+            throw new CustomException(ResultCode.PARAM_IS_INVALID, "path variable action");
         }
         //TODO replies action
 //        if ("replies".equals(action)) {

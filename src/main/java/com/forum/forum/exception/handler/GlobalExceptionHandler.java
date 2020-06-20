@@ -26,9 +26,9 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler(CustomException.class)
-	public ResponseEntity handleException(CustomException e) {
-	    e.printStackTrace();
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity handleException(CustomException e) {
+        e.printStackTrace();
         if (e.getResultCode().code() == 0) {
             return new ResponseEntity(new Result(e.getResultCode(), e.getData()), HttpStatus.OK);
         } else if (e.getResultCode().code() > 70000) {
@@ -49,13 +49,14 @@ public class GlobalExceptionHandler {
             StringBuffer errorMsg = new StringBuffer();
             if (result.hasErrors()) {
                 List<ObjectError> errors = result.getAllErrors();
-                errors.forEach(p ->{
+                errors.forEach(p -> {
                     FieldError fieldError = (FieldError) p;
                     errorMsg.append(fieldError.getDefaultMessage()).append(",");
-                    log.error("### 请求参数错误：{"+fieldError.getObjectName()+"},field{"+fieldError.getField()+ "},errorMessage{"+fieldError.getDefaultMessage()+"}"); });
+                    log.error("### 请求参数错误：{" + fieldError.getObjectName() + "},field{" + fieldError.getField() + "},errorMessage{" + fieldError.getDefaultMessage() + "}");
+                });
             }
         } else if (e instanceof BindException) {
-            BindException bindException = (BindException)e;
+            BindException bindException = (BindException) e;
             if (bindException.hasErrors()) {
                 log.error("### 请求参数错误: {}", bindException.getAllErrors());
             }
@@ -65,7 +66,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleOtherException(Exception e){
+    public ResponseEntity handleOtherException(Exception e) {
         e.printStackTrace();
         return new ResponseEntity(new Result(ResultCode.SYSTEM_INNER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
     }

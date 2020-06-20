@@ -30,7 +30,7 @@ public class UploadService {
         FirebaseApp app = FirebaseApp.initializeApp(options);
         StorageClient storageClient = StorageClient.getInstance(app);
         String blobString = "images/" + uploadFile.getOriginalFilename();
-        URL url= storageClient.bucket().create(blobString, uploadFile.getBytes(), String.valueOf(Bucket.BlobWriteOption.userProject("spring-forum-1cec4")))
+        URL url = storageClient.bucket().create(blobString, uploadFile.getBytes(), String.valueOf(Bucket.BlobWriteOption.userProject("spring-forum-1cec4")))
                 .signUrl(365, TimeUnit.DAYS);
         serviceAccount.close();
         app.delete();

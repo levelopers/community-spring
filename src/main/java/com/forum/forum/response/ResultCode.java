@@ -8,10 +8,10 @@ package com.forum.forum.response;
 public enum ResultCode {
 
     /* 成功状态码 */
-    SUCCESS(0,"操作成功！"),
+    SUCCESS(0, "操作成功！"),
 
     /* 错误状态码 */
-    FAIL(-1,"操作失败！"),
+    FAIL(-1, "操作失败！"),
 
     /* 参数错误：10001-19999 */
     PARAM_IS_INVALID(10001, "参数无效"),
@@ -70,9 +70,9 @@ public enum ResultCode {
 
 
     /* 权限错误：70001-79999 */
-    PERMISSION_UNAUTHENTICATED(70001,"此操作需要登陆系统！"),
-    PERMISSION_UNAUTHORISE(70002,"权限不足，无权操作！"),
-    PERMISSION_EXPIRE(70003,"登录状态过期！"),
+    PERMISSION_UNAUTHENTICATED(70001, "此操作需要登陆系统！"),
+    PERMISSION_UNAUTHORISE(70002, "权限不足，无权操作！"),
+    PERMISSION_EXPIRE(70003, "登录状态过期！"),
     PERMISSION_TOKEN_EXPIRED(70004, "token已过期"),
     PERMISSION_LIMIT(70005, "访问次数受限制"),
     PERMISSION_TOKEN_INVALID(70006, "无效token"),
@@ -82,7 +82,8 @@ public enum ResultCode {
     int code;
     //提示信息
     String message;
-    ResultCode(int code, String message){
+
+    ResultCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

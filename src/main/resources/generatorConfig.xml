@@ -15,11 +15,11 @@
                         password="${env.JDBC_DATABASE_PASSWORD}">
         </jdbcConnection>
 
-<!--        <jdbcConnection driverClass="org.h2.Driver"-->
-<!--                        connectionURL="jdbc:h2:D:\\dbs/H2/forum"-->
-<!--                        userId="sa"-->
-<!--                        password="123">-->
-<!--        </jdbcConnection>-->
+        <!--        <jdbcConnection driverClass="org.h2.Driver"-->
+        <!--                        connectionURL="jdbc:h2:D:\\dbs/H2/forum"-->
+        <!--                        userId="sa"-->
+        <!--                        password="123">-->
+        <!--        </jdbcConnection>-->
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>

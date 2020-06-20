@@ -2,7 +2,9 @@ package com.forum.forum.mapper;
 
 import com.forum.forum.model.User;
 import com.forum.forum.model.UserExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 

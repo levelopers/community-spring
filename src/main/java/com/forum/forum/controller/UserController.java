@@ -50,9 +50,9 @@ public class UserController {
     @ResponseBody
     public Result login(@RequestBody User userBody, HttpServletResponse response) {
         User dbUser = userService.findByUsername(userBody.getUsername());
-        boolean isPasswordMatched = passwordEncoder.matches(userBody.getPassword(),dbUser.getPassword());
+        boolean isPasswordMatched = passwordEncoder.matches(userBody.getPassword(), dbUser.getPassword());
         if (isPasswordMatched) {
-            String token= jwtProvider.generate(dbUser.getUsername());
+            String token = jwtProvider.generate(dbUser.getUsername());
             response.addHeader("Authorization", "Bearer " + token);
             JSONObject result = new JSONObject();
             result.put("token", token);

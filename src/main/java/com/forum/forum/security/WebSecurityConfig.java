@@ -31,16 +31,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtEntryPoint jwtEntryPoint;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 //TODO add authorities role authentication
-                .antMatchers(HttpMethod.POST,"/comment/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/comment/**").authenticated()
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/publish/**").authenticated()
-                .antMatchers(HttpMethod.POST,"/questions/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/questions/**").authenticated()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/users/**").permitAll()
                 .anyRequest().permitAll()
@@ -51,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);

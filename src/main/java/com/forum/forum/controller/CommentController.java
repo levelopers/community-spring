@@ -37,9 +37,9 @@ public class CommentController {
     }
 
     /**
-     * @description get all subcomments by parent comment id
      * @param id
      * @return
+     * @description get all subcomments by parent comment id
      */
     @ResponseBody
     @GetMapping("/comment/{id}")

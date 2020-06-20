@@ -29,7 +29,7 @@ public class PublishController {
     @PostMapping("/publish")
     @ResponseBody
     public Result<Question> doPublish(@RequestBody Question questionBody,
-                                         HttpServletRequest request) {
+                                      HttpServletRequest request) {
         User currentUser = userService.getCurrentUser(request);
         Question questionResult = questionService.post(questionBody, currentUser);
         return Result.okOf(questionResult);

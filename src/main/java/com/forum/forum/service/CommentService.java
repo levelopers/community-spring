@@ -58,7 +58,7 @@ public class CommentService {
         }
         Comment newComment = new Comment();
         if (comment.getId() == null) {
-            BeanUtils.copyProperties(comment,newComment);
+            BeanUtils.copyProperties(comment, newComment);
             newComment.setCommentator(currentUser.getId());
             newComment.setGmtCreate(System.currentTimeMillis());
             newComment.setGmtModified(newComment.getGmtCreate());
@@ -73,14 +73,14 @@ public class CommentService {
             if (dbComment.getCommentator() != currentUser.getId()) {
                 throw new CustomException(ResultCode.USER_NOT_EXIST, "comment.commentator");
             }
-            BeanUtils.copyProperties(dbComment,newComment);
+            BeanUtils.copyProperties(dbComment, newComment);
             newComment.setGmtModified(System.currentTimeMillis());
             newComment.setContent(comment.getContent());
             CommentExample example = new CommentExample();
             example.createCriteria().andIdEqualTo(comment.getId());
             commentMapper.updateByExampleSelective(newComment, example);
         }
-        if(newComment.getId()==null) {
+        if (newComment.getId() == null) {
             return null;
         }
         incCommentCount(newComment);

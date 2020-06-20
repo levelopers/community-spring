@@ -12,12 +12,12 @@ public class CustomException extends RuntimeException {
     private Object data;
     private ResultCode resultCode;
 
-    public CustomException(ResultCode resultCode){
+    public CustomException(ResultCode resultCode) {
         super(resultCode.message());
         this.resultCode = resultCode;
     }
 
-    public CustomException(ResultCode resultCode, Object data){
+    public CustomException(ResultCode resultCode, Object data) {
         super(resultCode.message());
         this.resultCode = resultCode;
         this.data = data;
