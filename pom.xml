@@ -13,12 +13,112 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>forum</name>
     <description>forum</description>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+                <env.JDBC_DATABASE_URL>jdbc:h2:D:\\dbs/H2/forum</env.JDBC_DATABASE_URL>
+                <env.JDBC_DATABASE_USERNAME>sa</env.JDBC_DATABASE_USERNAME>
+                <env.JDBC_DATABASE_PASSWORD>123</env.JDBC_DATABASE_PASSWORD>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>1.4.200</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>6.2.4</version>
+                        <configuration>
+                            <url>${env.JDBC_DATABASE_URL}</url>
+                            <user>${env.JDBC_DATABASE_USERNAME}</user>
+                            <password>${env.JDBC_DATABASE_PASSWORD}</password>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.h2database</groupId>
+                                <artifactId>h2</artifactId>
+                                <version>1.4.200</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.h2database</groupId>
+                                <artifactId>h2</artifactId>
+                                <version>1.4.200</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+                <env.JDBC_DATABASE_URL>${env.JDBC_DATABASE_URL}</env.JDBC_DATABASE_URL>
+                <env.JDBC_DATABASE_USERNAME>${env.JDBC_DATABASE_USERNAME}</env.JDBC_DATABASE_USERNAME>
+                <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>6.2.4</version>
+                        <configuration>
+                            <url>${env.JDBC_DATABASE_URL}</url>
+                            <user>${env.JDBC_DATABASE_USERNAME}</user>
+                            <password>${env.JDBC_DATABASE_PASSWORD}</password>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>42.2.12</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>42.2.12</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <properties>
         <java.version>1.8</java.version>
-        <env.JDBC_DATABASE_URL>${env.JDBC_DATABASE_URL}</env.JDBC_DATABASE_URL>
-        <env.JDBC_DATABASE_USERNAME>${env.JDBC_DATABASE_USERNAME}</env.JDBC_DATABASE_USERNAME>
-        <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
     </properties>
 
     <dependencies>
@@ -48,17 +148,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
         </dependency>
 
         <dependency>
@@ -117,6 +206,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
@@ -139,41 +233,17 @@
         </dependencies>
     </dependencyManagement>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.2.4</version>
-                <configuration>
-                    <url>${env.JDBC_DATABASE_URL}</url>
-                    <user>${env.JDBC_DATABASE_USERNAME}</user>
-                    <password>${env.JDBC_DATABASE_PASSWORD}</password>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>42.2.12</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>42.2.12</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
-
 </project>

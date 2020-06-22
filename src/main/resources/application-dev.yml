@@ -2,9 +2,10 @@ server:
   port: 8887
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
+    url: jdbc:h2:D:\\dbs/H2/forum
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 123
   servlet:
     multipart:
       max-file-size: 10MB

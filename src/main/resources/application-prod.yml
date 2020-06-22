@@ -20,7 +20,3 @@ jwtSecret: me.zack
 jwtExpiration: 86400
 defaultUserAvatartUrl: "https://storage.googleapis.com/spring-forum-1cec4.appspot.com/images/profile1.jfif?GoogleAccessId=firebase-adminsdk-t4is3@spring-forum-1cec4.iam.gserviceaccount.com&Expires=1623528500&Signature=aAsgX9iJ0%2FQvbDSfQRZxZgN1Gbc8uU%2FUZANNbFVyeO8YwUMjDOZxz29IEZeLIUKQW9p8L71qDqvvPzxHnBfVW9pNeGVdsf2SZKi1nMaicPcBlfP4Ymivl07O17eaEOKBBQB4d74ksBOCvHPwf%2BlOMLtmfJUQ0SIomOP8awXRhlZPiH7eHa9jcRuHxHkafSXAFBMsKQjT4U0SKUFU9kANjzY2XRxVb5Bd5x8IESaRGUHShbgsuFq06dRDvZgzdTpTpSb0r7OA62IvEeTBJT5sa0yxJlgbZKsuQG1ynFtdqo5ll%2Bq8tfbWy3Br55hVGwHD9dIzstSEyr7WvLt8qmfNYw%3D%3D"
 
-#logging.file.path=logs/community.log
-#logging.level.com.forum.forum.mapper=debug
-#logging.file.max-size=10MB
-#logging.file.max-history=100
