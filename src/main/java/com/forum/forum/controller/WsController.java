@@ -2,8 +2,10 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dto.QuestionDTO;
 import com.forum.forum.dto.WsResponseDTO;
+import com.forum.forum.exception.CustomException;
 import com.forum.forum.model.User;
 import com.forum.forum.response.Result;
+import com.forum.forum.response.ResultCode;
 import com.forum.forum.service.QuestionService;
 import com.forum.forum.service.UserService;
 import com.forum.forum.service.WsService;
@@ -36,13 +38,22 @@ public class WsController {
                               HttpServletRequest request) {
         QuestionDTO commentedQuestionDTO = questionService.findById(questionId);
         String receiver = commentedQuestionDTO.getUser().getUsername();
-
         User sender = userService.getCurrentUser(request);
+        if (sender == null) {
+            throw new CustomException(ResultCode.USER_NOT_LOGGED_IN, "request.headers.authentication");
+        }
         String senderName = sender.getUsername();
+        WsResponseDTO wsResponseDTO = new WsResponseDTO();
+        wsResponseDTO.setMessage(senderName
+                + " just make a comment to your question "
+                + "\""
+                + commentedQuestionDTO.getTitle()
+                + "\""
+        );
+        wsResponseDTO.setSender(senderName);
+        wsResponseDTO.setUrl("/questions/" + questionId);
         wsService.notify(
-                new WsResponseDTO(senderName
-                        + " just make a comment to your question "
-                        + commentedQuestionDTO.getTitle()),
+                wsResponseDTO,
                 receiver
         );
         return Result.okOf();

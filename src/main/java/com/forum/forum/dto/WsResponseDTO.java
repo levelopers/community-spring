@@ -9,9 +9,7 @@ import lombok.Data;
 @Data
 public class WsResponseDTO {
     private String message;
-
-    public WsResponseDTO(String message) {
-        this.message = message;
-    }
+    private String sender;
+    private String url;
 }
 

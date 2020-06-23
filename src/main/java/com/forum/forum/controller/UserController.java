@@ -56,6 +56,7 @@ public class UserController {
             response.addHeader("Authorization", "Bearer " + token);
             JSONObject result = new JSONObject();
             result.put("token", token);
+            result.put("username", dbUser.getUsername());
             return Result.okOf(result);
         } else {
             throw new CustomException(ResultCode.USER_LOGIN_ERROR, "user.username / user.password");
