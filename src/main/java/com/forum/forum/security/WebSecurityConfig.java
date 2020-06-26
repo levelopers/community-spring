@@ -43,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/publish/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/questions/**").authenticated()
                 .antMatchers("/user/**").authenticated()
+                .antMatchers("/notifications/**").authenticated()
                 .antMatchers("/users/**").permitAll()
                 .anyRequest().permitAll()
                 .and()

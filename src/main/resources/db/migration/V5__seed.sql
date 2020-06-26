@@ -144,3 +144,33 @@ COMMENT_COUNT) VALUES (
 'If you want to use the reactive style, just use observables everywhere. If you have observables only you can easy compose. If you mix them it''s not so clean anymore. If you don''t care about reactive style, you can use promise for single events where you don''t care about cancelable and observable for streams of events.',
 0
 );
+
+INSERT INTO NOTIFICATION (
+MESSAGE,
+GMT_CREATE,
+IS_READ,
+RECEIVER_ID,
+SENDER_ID,
+REDIRECT_URI) VALUES (
+'allen just make a comment to your question SORRY HORDE',
+1585385895854,
+false,
+1,
+2,
+'/questions/3'
+);
+
+INSERT INTO NOTIFICATION (
+MESSAGE,
+GMT_CREATE,
+IS_READ,
+RECEIVER_ID,
+SENDER_ID,
+REDIRECT_URI) VALUES (
+'allen just make a comment to your question What is the difference between Promises and Observables?',
+1585385895854,
+true,
+1,
+2,
+'/questions/1'
+);
