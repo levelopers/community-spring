@@ -57,30 +57,30 @@ public class CommentService {
             throw new CustomException(ResultCode.PARAM_NOT_COMPLETE, "comment.type");
         }
         Comment newComment = new Comment();
-        if (comment.getId() == null) {
+        if (comment.getCommentId() == null) {
             BeanUtils.copyProperties(comment, newComment);
-            newComment.setCommentator(currentUser.getId());
+            newComment.setCommentatorId(currentUser.getUserId());
             newComment.setGmtCreate(System.currentTimeMillis());
             newComment.setGmtModified(newComment.getGmtCreate());
             newComment.setCommentCount(0);
             newComment.setLikeCount(0L);
             commentMapper.insert(newComment);
         } else {
-            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getId());
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getCommentId());
             if (dbComment == null) {
                 throw new CustomException(ResultCode.PARAM_IS_INVALID, "comment.id");
             }
-            if (dbComment.getCommentator() != currentUser.getId()) {
+            if (dbComment.getCommentatorId() != currentUser.getUserId()) {
                 throw new CustomException(ResultCode.USER_NOT_EXIST, "comment.commentator");
             }
             BeanUtils.copyProperties(dbComment, newComment);
             newComment.setGmtModified(System.currentTimeMillis());
             newComment.setContent(comment.getContent());
             CommentExample example = new CommentExample();
-            example.createCriteria().andIdEqualTo(comment.getId());
+            example.createCriteria().andCommentIdEqualTo(comment.getCommentId());
             commentMapper.updateByExampleSelective(newComment, example);
         }
-        if (newComment.getId() == null) {
+        if (newComment.getCommentId() == null) {
             return null;
         }
         incCommentCount(newComment);
@@ -99,20 +99,19 @@ public class CommentService {
             return new ArrayList<>();
         }
 
-        Set<Long> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        Set<Long> commentators = comments.stream().map(comment -> comment.getCommentatorId()).collect(Collectors.toSet());
         List<Long> userIds = new ArrayList();
         userIds.addAll(commentators);
 
         UserExample userExample = new UserExample();
         userExample.createCriteria()
-                .andIdIn(userIds);
+                .andUserIdIn(userIds);
         List<User> users = userMapper.selectByExample(userExample);
-        Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+        Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getUserId(), user -> user));
 
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
-            CommentDTO commentDTO = new CommentDTO();
-            BeanUtils.copyProperties(comment, commentDTO);
-            commentDTO.setUser(new UserDTO(userMap.get(comment.getCommentator())));
+            CommentDTO commentDTO = new CommentDTO(comment);
+            commentDTO.setCommentator(new UserDTO(userMap.get(comment.getCommentatorId())));
             return commentDTO;
         }).collect(Collectors.toList());
 
@@ -146,7 +145,7 @@ public class CommentService {
                 throw new CustomException(ResultCode.RESULT_DATA_NONE, "comment.parentId");
             }
             Comment parentComment = new Comment();
-            parentComment.setId(comment.getParentId());
+            parentComment.setCommentId(comment.getParentId());
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCount(parentComment);
         }

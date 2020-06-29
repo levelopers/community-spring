@@ -26,7 +26,7 @@ public class NotificationService {
 
     public List<NotificationDTO> listByCurrentUser(User currentUser, Integer limit, Integer offset) {
         NotificationExample notificationExample = new NotificationExample();
-        notificationExample.createCriteria().andReceiverIdEqualTo(currentUser.getId());
+        notificationExample.createCriteria().andReceiverIdEqualTo(currentUser.getUserId());
         notificationExample.setOrderByClause("GMT_CREATE DESC");
         List<Notification> notificationList = notificationMapper.selectByExampleWithRowbounds(notificationExample, new RowBounds(offset, limit));
         List<NotificationDTO> notificationDTOList= new ArrayList<>();
@@ -44,7 +44,7 @@ public class NotificationService {
         Notification dbNotification = notificationMapper.selectByPrimaryKey(id);
         dbNotification.setIsRead(true);
         NotificationExample notificationExample = new NotificationExample();
-        notificationExample.createCriteria().andIdEqualTo(id);
+        notificationExample.createCriteria().andNotificationIdEqualTo(id);
         return notificationMapper.updateByExampleSelective(dbNotification,notificationExample);
     }
 }

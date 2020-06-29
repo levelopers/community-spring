@@ -73,8 +73,9 @@ public class UserController {
 
     @PostMapping("/user")
     @ResponseBody
-    public Result<UserDTO> updateUser(@RequestBody User userBody) {
-        User updatedUser = userService.updateUser(userBody);
+    public Result<UserDTO> updateUser(@RequestBody UserDTO userBody) {
+        User user = UserDTO.toUser(userBody);
+        User updatedUser = userService.updateUser(user);
         UserDTO userDTO = new UserDTO(updatedUser);
         return Result.okOf(userDTO);
     }
@@ -85,7 +86,7 @@ public class UserController {
         String url = uploadService.uploadObject(file);
         User dbuser = this.userService.getCurrentUser(request);
         User user = new User();
-        user.setId(dbuser.getId());
+        user.setUserId(dbuser.getUserId());
         user.setAvatarUrl(url);
         User updatedUser = this.userService.updateUser(user);
         UserDTO userDTO = new UserDTO(updatedUser);

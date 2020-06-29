@@ -44,7 +44,7 @@ public class WsController {
     public Result makeComment(@PathVariable(name = "questionId") Long questionId,
                               HttpServletRequest request) {
         QuestionDTO commentedQuestionDTO = questionService.findById(questionId);
-        String receiver = commentedQuestionDTO.getUser().getUsername();
+        String receiver = commentedQuestionDTO.getCreator().getUsername();
         User sender = userService.getCurrentUser(request);
         if (sender == null) {
             throw new CustomException(ResultCode.USER_NOT_LOGGED_IN, "request.headers.authentication");
@@ -57,7 +57,7 @@ public class WsController {
                 + commentedQuestionDTO.getTitle()
                 + "\""
         );
-        wsResponseDTO.setSender(senderName);
+        wsResponseDTO.setSenderName(senderName);
         wsResponseDTO.setUrl("/questions/" + questionId);
         wsService.notify(
                 wsResponseDTO,
@@ -65,9 +65,10 @@ public class WsController {
         );
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
+        notification.setIsRead(false);
         notification.setMessage(wsResponseDTO.getMessage());
-        notification.setReceiverId(commentedQuestionDTO.getUser().getId());
-        notification.setSenderId(sender.getId());
+        notification.setReceiverId(commentedQuestionDTO.getCreator().getId());
+        notification.setSenderId(sender.getUserId());
         notification.setRedirectUri("/questions/" + questionId);
         notificationService.save(notification);
         return Result.okOf();

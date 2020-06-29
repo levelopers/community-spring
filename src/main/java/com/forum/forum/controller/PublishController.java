@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.dto.QuestionDTO;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.User;
 import com.forum.forum.response.Result;
@@ -28,10 +29,10 @@ public class PublishController {
 
     @PostMapping("/publish")
     @ResponseBody
-    public Result<Question> doPublish(@RequestBody Question questionBody,
+    public Result<QuestionDTO> doPublish(@RequestBody Question questionBody,
                                       HttpServletRequest request) {
         User currentUser = userService.getCurrentUser(request);
-        Question questionResult = questionService.post(questionBody, currentUser);
+        QuestionDTO questionResult = questionService.post(questionBody, currentUser);
         return Result.okOf(questionResult);
     }
 

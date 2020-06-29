@@ -39,10 +39,7 @@ public class QuestionService {
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);
-            User user = userService.findById(question.getCreator());
-            questionDTO.setUser(new UserDTO(user));
+            QuestionDTO questionDTO = getQuestionDTO(question);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -50,15 +47,12 @@ public class QuestionService {
 
     public List<QuestionDTO> listByCurrentUser(User currentUser, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andCreatorEqualTo(currentUser.getId());
+        questionExample.createCriteria().andCreatorIdEqualTo(currentUser.getUserId());
         questionExample.setOrderByClause("GMT_MODIFIED DESC");
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);
-            User questionCreator = userService.findById(question.getCreator());
-            questionDTO.setUser(new UserDTO(questionCreator));
+            QuestionDTO questionDTO = getQuestionDTO(question);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -69,29 +63,25 @@ public class QuestionService {
         if (question == null) {
             throw new CustomException(ResultCode.RESULT_DATA_NONE, "question.id");
         }
-        QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question, questionDTO);
-
-        User user = userService.findById(question.getCreator());
-        questionDTO.setUser(new UserDTO(user));
+        QuestionDTO questionDTO = getQuestionDTO(question);
         return questionDTO;
     }
 
-    public Question post(Question questionBody, User currentUser) {
+    public QuestionDTO post(Question questionBody, User currentUser) {
         Question question = new Question();
         BeanUtils.copyProperties(questionBody, question);
-        question.setCreator(currentUser.getId());
+        question.setCreatorId(currentUser.getUserId());
 
-        if (question.getId() == null) {
+        if (question.getQuestionId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             question.setViewCount(0);
             question.setCommentCount(0);
             question.setLikeCount(0);
             questionMapper.insert(question);
-            return question;
+            return getQuestionDTO(question);
         } else {
-            Question dbQuestion = questionMapper.selectByPrimaryKey(question.getId());
+            Question dbQuestion = questionMapper.selectByPrimaryKey(question.getQuestionId());
             if (dbQuestion == null) {
                 throw new CustomException(ResultCode.RESULT_DATA_NONE, "question.id");
             }
@@ -100,16 +90,23 @@ public class QuestionService {
             question.setDescription(questionBody.getDescription());
             question.setTag(questionBody.getTag());
             QuestionExample example = new QuestionExample();
-            example.createCriteria().andIdEqualTo(questionBody.getId());
+            example.createCriteria().andQuestionIdEqualTo(questionBody.getQuestionId());
             questionMapper.updateByExampleSelective(question, example);
-            return question;
+            return getQuestionDTO(question);
         }
     }
 
     public void incView(Long id) {
         Question question = new Question();
-        question.setId(id);
+        question.setQuestionId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    private QuestionDTO getQuestionDTO(Question question) {
+        QuestionDTO questionDTO = new QuestionDTO(question);
+        User user = userService.findById(question.getCreatorId());
+        questionDTO.setCreator(new UserDTO(user));
+        return questionDTO;
     }
 }

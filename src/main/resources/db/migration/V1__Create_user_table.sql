@@ -1,5 +1,5 @@
-CREATE SCHEMA "public";
-CREATE TABLE "public"."t_user"
+
+CREATE TABLE t_user
 (
  "USER_ID"      bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
  start 1

@@ -50,7 +50,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        User dbuser = userMapper.selectByPrimaryKey(user.getId());
+        User dbuser = userMapper.selectByPrimaryKey(user.getUserId());
         if (dbuser == null) {
             throw new CustomException(ResultCode.USER_NOT_EXIST, "user.id");
         }
@@ -65,7 +65,7 @@ public class UserService {
         }
         dbuser.setGmtModified(System.currentTimeMillis());
         UserExample example = new UserExample();
-        example.createCriteria().andIdEqualTo(dbuser.getId());
+        example.createCriteria().andUserIdEqualTo(dbuser.getUserId());
         userMapper.updateByExampleSelective(dbuser, example);
         return dbuser;
     }

@@ -16,7 +16,7 @@ public class NotificationDTO {
     private String redirectUri;
 
     public NotificationDTO(Notification notification) {
-        this.id = notification.getId();
+        this.id = notification.getNotificationId();
         this.message = notification.getMessage();
         this.gmtCreate = notification.getGmtCreate();
         this.isRead = notification.getIsRead();

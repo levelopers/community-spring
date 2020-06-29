@@ -1,5 +1,5 @@
 
-INSERT INTO "public"."t_user" (username,
+INSERT INTO t_user (username,
 password,
 AVATAR_URL,
 GMT_CREATE,
@@ -9,7 +9,7 @@ GMT_MODIFIED) VALUES ('zack',
 1585385895854,
 1585385895854);
 
-INSERT INTO "public"."t_user" (username,
+INSERT INTO t_user (username,
 password,
 AVATAR_URL,
 GMT_CREATE,
@@ -19,7 +19,7 @@ GMT_MODIFIED) VALUES ('allen',
 1585385895854,
 1585385895854);
 
-INSERT INTO "public"."QUESTION" (
+INSERT INTO QUESTION (
 TITLE,
 DESCRIPTION,
 GMT_CREATE,
@@ -43,7 +43,7 @@ An example on each would be helpful in understanding both the cases. In what sce
 );
 
 
-INSERT INTO "public"."QUESTION" (
+INSERT INTO QUESTION (
 TITLE,
 DESCRIPTION,
 GMT_CREATE,
@@ -68,7 +68,7 @@ In many articles when ngRoute is used, route is configured with $routeProvider. 
 'tag1,tag2'
 );
 
-INSERT INTO "public"."QUESTION" (
+INSERT INTO QUESTION (
 TITLE,
 DESCRIPTION,
 GMT_CREATE,
@@ -89,7 +89,7 @@ TAG) VALUES (
 'For the Horde'
 );
 
-INSERT INTO "public"."COMMENT" (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR_ID,
@@ -120,7 +120,7 @@ Observable also has the advantage over Promise to be cancelable. If the result o
 );
 
 
-INSERT INTO "public"."COMMENT" (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR_ID,
@@ -139,7 +139,7 @@ COMMENT_COUNT) VALUES (
 1
 );
 
-INSERT INTO "public"."COMMENT" (
+INSERT INTO COMMENT (
 PARENT_ID,
 TYPE,
 COMMENTATOR_ID,
@@ -158,7 +158,7 @@ COMMENT_COUNT) VALUES (
 0
 );
 
-INSERT INTO "public"."NOTIFICATION" (
+INSERT INTO NOTIFICATION (
 MESSAGE,
 GMT_CREATE,
 IS_READ,
@@ -173,7 +173,7 @@ false,
 '/questions/3'
 );
 
-INSERT INTO "public"."NOTIFICATION" (
+INSERT INTO NOTIFICATION (
 MESSAGE,
 GMT_CREATE,
 IS_READ,
