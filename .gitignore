@@ -4,7 +4,6 @@ target/
 !**/src/main/**
 !**/src/test/**
 logs/
-
 ### STS ###
 .apt_generated
 .classpath
@@ -30,4 +29,4 @@ build/
 
 ### VS Code ###
 .vscode/
-service-account-file.json
+
