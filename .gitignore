@@ -4,6 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 logs/
+./service-account-file.json
 ### STS ###
 .apt_generated
 .classpath
