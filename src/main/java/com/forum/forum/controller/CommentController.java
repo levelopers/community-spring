@@ -1,6 +1,7 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.CommentDTO;
+import com.forum.forum.dto.UserDTO;
 import com.forum.forum.enums.CommentTypeEnum;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.User;
@@ -29,11 +30,13 @@ public class CommentController {
 
     @ResponseBody
     @PostMapping("/comment")
-    public Object post(@RequestBody Comment comment,
+    public Result<CommentDTO> post(@RequestBody Comment comment,
                        HttpServletRequest request) {
         User currentUser = userService.getCurrentUser(request);
         Comment commentResult = commentService.post(comment, currentUser);
-        return Result.okOf(commentResult);
+        CommentDTO commentDTO = new CommentDTO(commentResult);
+        commentDTO.setCommentator(new UserDTO(currentUser));
+        return Result.okOf(commentDTO);
     }
 
     /**
@@ -42,14 +45,14 @@ public class CommentController {
      * @description get all subcomments by parent comment id
      */
     @ResponseBody
-    @GetMapping("/comment/{id}")
+    @GetMapping("/comments/{id}")
     public Result<List<CommentDTO>> comments(@PathVariable(name = "id") Long id) {
         List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
         return Result.okOf(commentDTOS);
     }
 
     @ResponseBody
-    @PostMapping("/comment/{id}/like")
+    @PostMapping("/comments/{id}/like")
     public Result incLikeCount(@PathVariable(name = "id") Long id) {
         // TODO db record track who liked
         int result = commentService.incLikeCount(id);
@@ -57,7 +60,7 @@ public class CommentController {
     }
 
     @ResponseBody
-    @PostMapping("/comment/{id}/dislike")
+    @PostMapping("/comments/{id}/dislike")
     public Result decLikeCount(@PathVariable(name = "id") Long id) {
         int result = commentService.decLikeCount(id);
         return Result.okOf(result);

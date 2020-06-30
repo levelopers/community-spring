@@ -38,7 +38,7 @@ public class WsController {
     @Autowired
     private NotificationService notificationService;
 
-    @PostMapping("/makeComment/{questionId}")
+    @PostMapping("/ws/makeComment/{questionId}")
     @ResponseBody
     @Transactional
     public Result makeComment(@PathVariable(name = "questionId") Long questionId,

@@ -40,17 +40,18 @@ public class UserController {
 
     @PostMapping("/users/signup")
     @ResponseBody
-    public Result<UserDTO> signUp(@RequestBody User userBody) {
-        User newUser = userService.createUser(userBody);
+    public Result<UserDTO> signUp(@RequestBody UserDTO userBody) {
+        User user = UserDTO.toUser(userBody);
+        User newUser = userService.createUser(user);
         UserDTO userDTO = new UserDTO(newUser);
         return Result.okOf(userDTO);
     }
 
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
     @ResponseBody
-    public Result login(@RequestBody User userBody, HttpServletResponse response) {
+    public Result login(@RequestBody UserDTO userBody, HttpServletResponse response) {
         User dbUser = userService.findByUsername(userBody.getUsername());
-        boolean isPasswordMatched = passwordEncoder.matches(userBody.getPassword(), dbUser.getPassword());
+        boolean isPasswordMatched = passwordEncoder.matches(userBody.getPassword().orElse(""), dbUser.getPassword());
         if (isPasswordMatched) {
             String token = jwtProvider.generate(dbUser.getUsername());
             response.addHeader("Authorization", "Bearer " + token);

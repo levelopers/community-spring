@@ -41,7 +41,7 @@ public class UserService {
         }
         User newUser = new User();
         newUser.setGmtCreate(System.currentTimeMillis());
-        newUser.setGmtModified(user.getGmtCreate());
+        newUser.setGmtModified(newUser.getGmtCreate());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setAvatarUrl(defaultUserAvatartUrl);

@@ -37,7 +37,7 @@ public class NotificationController {
 
     @PostMapping("/notifications/{id}/read")
     @ResponseBody
-    public Result<NotificationDTO> notifications(@PathVariable(name = "id") Long id) {
+    public Result notifications(@PathVariable(name = "id") Long id) {
         notificationService.readNotification(id);
         return Result.okOf();
     }

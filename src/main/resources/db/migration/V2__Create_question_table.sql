@@ -3,7 +3,7 @@ CREATE TABLE QUESTION
  "QUESTION_ID"   bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
  start 1
  ),
- "TITLE"         varchar(250) NOT NULL,
+ "TITLE"         varchar(200) NOT NULL,
  "DESCRIPTION"   varchar(1024) NOT NULL,
  "GMT_CREATE"    bigint NOT NULL,
  "GMT_MODIFIED"  bigint NOT NULL,
