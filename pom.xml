@@ -77,10 +77,7 @@
                 <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
             </properties>
             <dependencies>
-                <dependency>
-                    <groupId>org.postgresql</groupId>
-                    <artifactId>postgresql</artifactId>
-                </dependency>
+
             </dependencies>
             <build>
                 <plugins>
@@ -126,6 +123,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
 
         <dependency>
