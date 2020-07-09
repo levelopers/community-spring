@@ -13,9 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>forum</name>
     <description>forum</description>
-    <properties>
-        <spring.profiles.active>${env.SPRING_PROFILES_ACTIVE}</spring.profiles.active>
-    </properties>
     <profiles>
         <profile>
             <id>prod</id>
@@ -126,6 +123,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <spring.profiles.active>${env.SPRING_PROFILES_ACTIVE}</spring.profiles.active>
     </properties>
 
     <dependencies>
