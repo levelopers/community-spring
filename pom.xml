@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>forum</name>
     <description>forum</description>
+    <properties>
+        <spring.profiles.active>${env.SPRING_PROFILES_ACTIVE}</spring.profiles.active>
+    </properties>
     <profiles>
         <profile>
             <id>prod</id>
@@ -247,6 +250,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <profiles>
+                        <profile>${spring.profiles.active}</profile>
+                    </profiles>
+                </configuration>
             </plugin>
         </plugins>
     </build>
