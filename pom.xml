@@ -22,6 +22,9 @@
                 <env.JDBC_DATABASE_USERNAME>${env.JDBC_DATABASE_USERNAME}</env.JDBC_DATABASE_USERNAME>
                 <env.JDBC_DATABASE_PASSWORD>${env.JDBC_DATABASE_PASSWORD}</env.JDBC_DATABASE_PASSWORD>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.postgresql</groupId>
@@ -71,9 +74,9 @@
                 <env.JDBC_DATABASE_USERNAME>sa</env.JDBC_DATABASE_USERNAME>
                 <env.JDBC_DATABASE_PASSWORD>123</env.JDBC_DATABASE_PASSWORD>
             </properties>
-<!--            <activation>-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--            </activation>-->
+            <!--            <activation>-->
+            <!--                <activeByDefault>true</activeByDefault>-->
+            <!--            </activation>-->
             <dependencies>
                 <dependency>
                     <groupId>com.h2database</groupId>
