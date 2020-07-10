@@ -1,7 +1,7 @@
 
 CREATE TABLE t_user
 (
- "T_USER_ID"      bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
+ "USER_ID"      bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
  start 1
  ),
  "USERNAME"     varchar(50) NOT NULL,
@@ -9,5 +9,5 @@ CREATE TABLE t_user
  "GMT_MODIFIED" bigint NOT NULL,
  "AVATAR_URL"   varchar NOT NULL,
  "PASSWORD"     varchar(100) NOT NULL,
- CONSTRAINT "PK_t_user" PRIMARY KEY ( "T_USER_ID" )
+ CONSTRAINT "PK_t_user" PRIMARY KEY ( "USER_ID" )
 );
