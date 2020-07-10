@@ -2,6 +2,7 @@ server:
   port: 8887
 spring:
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
@@ -9,7 +10,10 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
+  flyway:
+    url: ${JDBC_DATABASE_URL}
+    user: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

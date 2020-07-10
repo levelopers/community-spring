@@ -1,0 +1,4 @@
+
+flyway.user=${JDBC_DATABASE_URL}
+flyway.url=${JDBC_DATABASE_USERNAME}
+flyway.password=${JDBC_DATABASE_PASSWORD}
