@@ -1,8 +1,6 @@
 CREATE TABLE COMMENT
 (
- "COMMENT_ID"     bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
- start 1
- ),
+ "COMMENT_ID"     bigserial NOT NULL,
  "PARENT_ID"      bigint NOT NULL,
  "TYPE"           integer NOT NULL,
  "GMT_CREATE"     bigint NOT NULL,

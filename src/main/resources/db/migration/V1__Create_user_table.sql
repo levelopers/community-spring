@@ -1,9 +1,7 @@
 
 CREATE TABLE t_user
 (
- "USER_ID"      bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
- start 1
- ),
+ "USER_ID"      bigserial NOT NULL,
  "USERNAME"     varchar(50) NOT NULL,
  "GMT_CREATE"   bigint NOT NULL,
  "GMT_MODIFIED" bigint NOT NULL,

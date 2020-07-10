@@ -1,8 +1,6 @@
 CREATE TABLE NOTIFICATION
 (
- "NOTIFICATION_ID" bigserial NOT NULL GENERATED ALWAYS AS IDENTITY (
- start 1
- ),
+ "NOTIFICATION_ID" bigserial NOT NULL,
  "MESSAGE"         varchar(256) NOT NULL,
  "GMT_CREATE"      bigint NOT NULL,
  "IS_READ"         boolean default false NOT NULL,
