@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ：Zack
@@ -33,7 +34,7 @@ public class QuestionService {
     @Autowired
     private UserService userService;
 
-    public List<QuestionDTO> list(Integer limit, Integer offset) {
+    public List<QuestionDTO> list(Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.setOrderByClause("GMT_MODIFIED DESC");
         List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
@@ -56,6 +57,19 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
+    }
+
+    public List<QuestionDTO> listByTag(String tagName, Integer offset, Integer limit) {
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andTagLike(new StringBuilder().append("%").append(tagName).append("%").toString());
+//        TODO Extending the Example Classes
+        questionExample.setOrderByClause("VIEW_COUNT, LIKE_COUNT DESC");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, limit));
+        List<QuestionDTO> questionDTOS = questions
+                .stream()
+                .map(this::getQuestionDTO)
+                .collect(Collectors.toList());
+        return questionDTOS;
     }
 
     public QuestionDTO findById(Long id) {

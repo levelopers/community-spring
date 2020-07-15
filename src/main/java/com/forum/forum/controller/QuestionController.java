@@ -46,8 +46,14 @@ public class QuestionController {
     @GetMapping("/questions")
     @ResponseBody
     public Result<List<QuestionDTO>> index(@RequestParam(name = "limit", defaultValue = "20") Integer limit,
-                                           @RequestParam(name = "offset", defaultValue = "0") Integer offset) {
-        List<QuestionDTO> questionDTOList = questionService.list(limit, offset);
+                                           @RequestParam(name = "offset", defaultValue = "0") Integer offset,
+                                           @RequestParam(required = false) String tag) {
+        List<QuestionDTO> questionDTOList;
+        if (tag != null) {
+            questionDTOList = questionService.listByTag(tag, offset, limit);
+        } else {
+            questionDTOList = questionService.list(offset, limit);
+        }
         return Result.okOf(questionDTOList);
     }
 }

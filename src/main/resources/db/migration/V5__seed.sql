@@ -86,7 +86,7 @@ TAG) VALUES (
 0,
 1,
 13,
-'For the Horde'
+'tag2,tag3'
 );
 
 INSERT INTO COMMENT (
