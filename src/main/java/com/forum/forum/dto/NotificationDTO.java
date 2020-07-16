@@ -3,12 +3,14 @@ package com.forum.forum.dto;
 import com.forum.forum.model.Notification;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author ：Zack
  * @date ：Created in 2020/6/25 18:59
  */
 @Data
-public class NotificationDTO {
+public class NotificationDTO implements Serializable {
     private Long id;
     private String message;
     private Long gmtCreate;

@@ -4,13 +4,15 @@ import com.forum.forum.model.Question;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author ：Zack
  * @date ：Created in 2020/2/27 19:25
  */
 @Data
 @NoArgsConstructor
-public class QuestionDTO {
+public class QuestionDTO implements Serializable {
     private Long id;
     private String title;
     private String description;
@@ -22,6 +24,7 @@ public class QuestionDTO {
     private Integer likeCount;
     private Long creatorId;
     private UserDTO creator;
+
     public QuestionDTO(Question question) {
         this.id = question.getQuestionId();
         this.title = question.getTitle();

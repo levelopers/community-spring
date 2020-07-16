@@ -4,6 +4,7 @@ import com.forum.forum.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Optional;
  */
 @Data
 @NoArgsConstructor
-public class UserDTO {
+public class UserDTO implements Serializable {
     private Long id;
     private String username;
     private String avatarUrl;

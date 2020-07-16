@@ -25,3 +25,10 @@ services:
       - PGADMIN_DEFAULT_EMAIL=pgadmin@example.com
       - PGADMIN_DEFAULT_PASSWORD=admin
       - POSTGRES_PASSWORD=root
+
+  redis:
+    image: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+

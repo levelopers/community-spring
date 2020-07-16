@@ -9,6 +9,7 @@ import com.forum.forum.security.jwt.JwtProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,7 @@ public class UserService {
         return dbuser;
     }
 
+    @Cacheable(value = "user_by_username", key = "#username")
     public User findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             return null;
@@ -83,6 +85,7 @@ public class UserService {
         return users.get(0);
     }
 
+    @Cacheable(value = "user_by_userId", key = "#id")
     public User findById(Long id) {
         return userMapper.selectByPrimaryKey(id);
     }

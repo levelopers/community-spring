@@ -10,6 +10,7 @@ import com.forum.forum.response.ResultCode;
 import com.forum.forum.security.jwt.JwtProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,6 +88,7 @@ public class CommentService {
         return newComment;
     }
 
+    @Cacheable(value = "comments_by_id", key = "#id")
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()

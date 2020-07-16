@@ -9,6 +9,7 @@ import com.forum.forum.model.Question;
 import com.forum.forum.model.User;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,20 +25,21 @@ public class NotificationService {
     @Autowired
     private NotificationMapper notificationMapper;
 
+    @Cacheable(value = "notifications_by_userId", key = "#currentUser.userId")
     public List<NotificationDTO> listByCurrentUser(User currentUser, Integer limit, Integer offset) {
         NotificationExample notificationExample = new NotificationExample();
         notificationExample.createCriteria().andReceiverIdEqualTo(currentUser.getUserId());
         notificationExample.setOrderByClause("GMT_CREATE DESC");
         List<Notification> notificationList = notificationMapper.selectByExampleWithRowbounds(notificationExample, new RowBounds(offset, limit));
-        List<NotificationDTO> notificationDTOList= new ArrayList<>();
-        for (Notification notification: notificationList) {
+        List<NotificationDTO> notificationDTOList = new ArrayList<>();
+        for (Notification notification : notificationList) {
             notificationDTOList.add(new NotificationDTO(notification));
         }
         return notificationDTOList;
     }
 
     public int save(Notification notification) {
-       return notificationMapper.insert(notification);
+        return notificationMapper.insert(notification);
     }
 
     public int readNotification(Long id) {
@@ -45,7 +47,7 @@ public class NotificationService {
         dbNotification.setIsRead(true);
         NotificationExample notificationExample = new NotificationExample();
         notificationExample.createCriteria().andNotificationIdEqualTo(id);
-        return notificationMapper.updateByExampleSelective(dbNotification,notificationExample);
+        return notificationMapper.updateByExampleSelective(dbNotification, notificationExample);
     }
 }
 

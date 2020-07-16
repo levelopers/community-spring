@@ -12,6 +12,7 @@ import com.forum.forum.response.ResultCode;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class QuestionService {
     @Autowired
     private UserService userService;
 
+    @Cacheable(cacheNames = "questions_all")
     public List<QuestionDTO> list(Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.setOrderByClause("GMT_MODIFIED DESC");
@@ -46,6 +48,7 @@ public class QuestionService {
         return questionDTOList;
     }
 
+    @Cacheable(value = "questions_by_userId", key = "#currentUser.userId")
     public List<QuestionDTO> listByCurrentUser(User currentUser, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorIdEqualTo(currentUser.getUserId());
@@ -59,6 +62,7 @@ public class QuestionService {
         return questionDTOList;
     }
 
+    @Cacheable(value = "questions_by_tag", key = "#tagName")
     public List<QuestionDTO> listByTag(String tagName, Integer offset, Integer limit) {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andTagLike(new StringBuilder().append("%").append(tagName).append("%").toString());
@@ -72,6 +76,7 @@ public class QuestionService {
         return questionDTOS;
     }
 
+    @Cacheable(value = "question_by_id", key = "#id")
     public QuestionDTO findById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
